@@ -25,10 +25,10 @@ const initialTestimonials = [
   },
   {
     quote: "Working with 22-Automations was like having a technical co-founder. They didn't just build our platform, they helped us reimagine our entire strategy.",
-    author: "David Kim",
-    role: "Founder",
-    company: "EcoLogistics",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"
+    author: "Irfan Khan",
+    role: "Vape Point",
+    company: "Brampton",
+    image: "https://api.dicebear.com/7.x/initials/svg?seed=Irfan%20Khan&backgroundColor=0284c7"
   }
 ]
 
