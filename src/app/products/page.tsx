@@ -6,58 +6,40 @@ import Link from 'next/link'
 export default function Products() {
   const products = [
     {
-      title: "WorkFlow Pro",
-      category: "Process Automation",
-      description: "Complete workflow automation platform that streamlines business processes and eliminates manual tasks.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-      features: ["Visual Workflow Builder", "API Integrations", "Real-time Analytics", "Custom Triggers"],
-      benefits: ["80% time savings", "99.9% reliability", "Zero-code setup"],
-      price: "From $299/month"
+      title: "AI-GEO Optimizations",
+      category: "Geo-Spatial AI",
+      description: "Optimize geographical resource planning, field routes, and spatial analytics with advanced machine learning models.",
+      image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=400&fit=crop",
+      features: ["Route Optimization", "Demographics Analysis", "Spatial Trend Forecasting", "Custom Map Overlays"],
+      benefits: ["30% reduction in fuel/time", "Data-driven site selection", "Interactive dashboards"],
+      price: "Custom Pricing"
     },
     {
-      title: "DataSync Engine",
-      category: "Data Integration",
-      description: "Intelligent data synchronization solution that connects all your business systems in real-time.",
-      image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=400&fit=crop",
-      features: ["Multi-platform Sync", "Data Transformation", "Error Handling", "Backup & Recovery"],
-      benefits: ["Real-time updates", "Data consistency", "Automated backups"],
-      price: "From $199/month"
-    },
-    {
-      title: "AI Assistant Hub",
-      category: "AI Automation",
-      description: "Smart AI-powered automation that learns from your workflows and optimizes business processes.",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop",
-      features: ["Machine Learning", "Natural Language Processing", "Predictive Analytics", "Smart Routing"],
-      benefits: ["Intelligent decisions", "Continuous learning", "Performance optimization"],
-      price: "From $499/month"
-    },
-    {
-      title: "E-commerce Automator",
-      category: "E-commerce Solutions",
-      description: "Complete e-commerce automation suite for inventory, orders, customer service, and marketing.",
+      title: "POS CRM Softwares",
+      category: "Business Operations",
+      description: "Fully integrated Point of Sale and Customer Relationship Management systems to unify checkout and customer loyalty.",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
-      features: ["Inventory Management", "Order Processing", "Customer Support", "Marketing Automation"],
-      benefits: ["Increased sales", "Reduced errors", "24/7 operations"],
-      price: "From $399/month"
-    },
-    {
-      title: "Communication Bridge",
-      category: "Team Collaboration",
-      description: "Automated communication platform that connects teams, customers, and systems seamlessly.",
-      image: "https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=600&h=400&fit=crop",
-      features: ["Multi-channel Messaging", "Automated Responses", "Team Notifications", "Integration APIs"],
-      benefits: ["Faster response times", "Better coordination", "Reduced manual work"],
+      features: ["Inventory Tracking", "Loyalty Programs", "Sales & Tax Reports", "Multi-store Syncing"],
+      benefits: ["Seamless transactions", "Increased customer retention", "Automated stock alerts"],
       price: "From $149/month"
     },
     {
-      title: "Analytics Dashboard",
-      category: "Business Intelligence",
-      description: "Real-time analytics and reporting platform that turns your automation data into actionable insights.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-      features: ["Real-time Dashboards", "Custom Reports", "Performance Metrics", "Trend Analysis"],
-      benefits: ["Data-driven decisions", "Performance tracking", "ROI optimization"],
-      price: "From $249/month"
+      title: "IOT and AI Workflows and Solutions",
+      category: "Smart Systems",
+      description: "Automate sensor event triggers and orchestrate complex workflows by combining physical IoT hardware with cloud-based AI engines.",
+      image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=400&fit=crop",
+      features: ["Edge Sensor Listeners", "AI Predictive Alerts", "Automated Actions Trigger", "OTA Device Fleet Console"],
+      benefits: ["Real-time smart monitoring", "Preventative maintenance alerts", "End-to-end encryption"],
+      price: "From $399/month"
+    },
+    {
+      title: "Email and SMS Marketing",
+      category: "Marketing Automation",
+      description: "Supercharge your audience outreach and conversions with an automated message scheduler, templates, and analytics tracker.",
+      image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=600&h=400&fit=crop",
+      features: ["Drip Campaign Designer", "High-Deliverability Routing", "Audience Segmentation", "A/B Testing Engine"],
+      benefits: ["Maximized email delivery", "Personalized SMS triggers", "Real-time CTR analytics"],
+      price: "From $99/month"
     }
   ]
 
@@ -227,7 +209,7 @@ export default function Products() {
                   <p className="text-sm text-muted-foreground">Grows with your business</p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <Link href="/contact">
                   <Button size="lg" className="text-lg px-8 py-6 glow-effect">
                     Request Custom Quote
@@ -236,6 +218,12 @@ export default function Products() {
                 <Button size="lg" variant="outline" className="text-lg px-8 py-6">
                   Schedule Consultation
                 </Button>
+              </div>
+              <div className="text-sm text-muted-foreground border-t border-white/5 pt-6">
+                Or contact us directly:{" "}
+                <a href="mailto:automations.22@outlook.com" className="text-primary hover:underline font-semibold mx-1">automations.22@outlook.com</a>
+                {" "}|{" "}
+                <a href="tel:4378084197" className="text-primary hover:underline font-semibold mx-1">+1 (437) 808-4197</a>
               </div>
             </CardContent>
           </Card>
@@ -251,10 +239,14 @@ export default function Products() {
           <p className="text-muted-foreground mb-6">
             Automating success, one workflow at a time.
           </p>
-          <div className="flex justify-center space-x-6 text-sm text-muted-foreground">
+          <div className="flex justify-center space-x-6 text-sm text-muted-foreground mb-4">
             <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
             <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
             <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+          </div>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Email: <a href="mailto:automations.22@outlook.com" className="hover:text-primary transition-colors">automations.22@outlook.com</a></p>
+            <p>Mobile: <a href="tel:4378084197" className="hover:text-primary transition-colors">+1 (437) 808-4197</a></p>
           </div>
         </div>
       </footer>

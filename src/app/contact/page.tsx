@@ -91,13 +91,13 @@ export default function Contact() {
     {
       title: "Email Us",
       description: "Get in touch via email",
-      value: "dascam099@gmail.com",
+      value: "automations.22@outlook.com",
       icon: "📧"
     },
     {
       title: "Call Us",
       description: "Speak with our team",
-      value: "+1 (437) 243-4197",
+      value: "+1 (437) 808-4197",
       icon: "📞"
     },
     {
@@ -449,10 +449,14 @@ export default function Contact() {
           <p className="text-muted-foreground mb-6">
             Automating success, one workflow at a time.
           </p>
-          <div className="flex justify-center space-x-6 text-sm text-muted-foreground">
+          <div className="flex justify-center space-x-6 text-sm text-muted-foreground mb-4">
             <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
             <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
             <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+          </div>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p>Email: <a href="mailto:automations.22@outlook.com" className="hover:text-primary transition-colors">automations.22@outlook.com</a></p>
+            <p>Mobile: <a href="tel:4378084197" className="hover:text-primary transition-colors">+1 (437) 808-4197</a></p>
           </div>
         </div>
       </footer>

@@ -93,7 +93,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* App Development */}
             <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float">
               <CardHeader>
@@ -161,6 +161,35 @@ export default function Home() {
                   <li>• Process Automation</li>
                   <li>• Data Analytics</li>
                   <li>• Chatbots & Virtual Assistants</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            {/* IOT Solutions */}
+            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float relative overflow-hidden" style={{animationDelay: '3s'}}>
+              <CardHeader>
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 glow-effect relative">
+                  <div className="w-8 h-8 border-2 border-primary rounded-md relative flex items-center justify-center">
+                    <div className="w-4 h-4 bg-accent rounded-full animate-ping absolute"></div>
+                    <div className="w-2.5 h-2.5 bg-primary rounded-full z-10"></div>
+                  </div>
+                </div>
+                <CardTitle className="text-2xl text-gradient flex items-center justify-between gap-2">
+                  IOT Solutions
+                  <Badge variant="secondary" className="text-[10px] bg-accent/20 text-accent border border-accent/30 animate-pulse">
+                    Coming Soon
+                  </Badge>
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Connect, monitor, and automate physical devices with intelligent IoT sensors and real-time cloud analytics.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li>• Smart Device Integration</li>
+                  <li>• Real-time Sensor Data</li>
+                  <li>• Edge Computing & AI</li>
+                  <li>• OTA Firmware Updates</li>
                 </ul>
               </CardContent>
             </Card>
