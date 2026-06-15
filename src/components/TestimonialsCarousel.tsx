@@ -11,17 +11,17 @@ import { Label } from '@/components/ui/label'
 const initialTestimonials = [
   {
     quote: "22-Automations transformed our entire business model. Their AI solution increased our efficiency by 340% and opened up revenue streams we never thought possible.",
-    author: "Marcus Chen",
-    role: "CEO",
-    company: "InnovateTech Solutions",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=60&h=60&fit=crop&crop=face"
+    author: "Jay",
+    role: "Owner",
+    company: "IN N OUT Carwash",
+    image: "https://api.dicebear.com/7.x/initials/svg?seed=Jay&backgroundColor=0284c7"
   },
   {
     quote: "The mobile app they developed for us has 2M+ active users and a 4.9 star rating. The team's attention to detail and user experience is unmatched.",
-    author: "Sarah Rodriguez",
-    role: "Product Director",
-    company: "HealthTech Pro",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b1e75e03?w=60&h=60&fit=crop&crop=face"
+    author: "Gurpreet Sainz",
+    role: "CEO",
+    company: "Tattoo Lore",
+    image: "https://api.dicebear.com/7.x/initials/svg?seed=Gurpreet%20Sainz&backgroundColor=0284c7"
   },
   {
     quote: "Working with 22-Automations was like having a technical co-founder. They didn't just build our platform, they helped us reimagine our entire strategy.",
