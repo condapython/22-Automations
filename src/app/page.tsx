@@ -5,6 +5,7 @@ import ParticleSystem from '@/components/ParticleSystem'
 import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 import HeroVideoBackground from '@/components/HeroVideoBackground'
 import Link from 'next/link'
+import geoAssets from "./geo-assets.json"
 
 export default function Home() {
   return (
@@ -63,6 +64,13 @@ export default function Home() {
               <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed hero-text-shadow backdrop-blur-sm bg-background/10 rounded-lg p-4 border border-white/10">
                 We craft cutting-edge apps, websites, and AI-powered workflows that transform your business into a digital powerhouse.
               </p>
+
+              {/* GEO Answer-First Summary for Search Engine Visibility */}
+              {geoAssets && geoAssets.answer_first_summary && (
+                <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed border-l-4 border-primary pl-4 py-1 italic bg-primary/5 rounded-r-lg">
+                  {geoAssets.answer_first_summary}
+                </p>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                 <Link href="/contact">
@@ -203,6 +211,34 @@ export default function Home() {
           <TestimonialsCarousel />
         </div>
       </section>
+
+      {/* FAQ Section */}
+      {geoAssets && geoAssets.suggested_faqs && geoAssets.suggested_faqs.length > 0 && (
+        <section className="py-20 px-6 border-t border-border/20">
+          <div className="container mx-auto max-w-4xl">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-4">
+                <span className="text-gradient">Frequently Asked Questions</span>
+              </h2>
+              <p className="text-muted-foreground">
+                Quick answers optimized for conversational AI search engines.
+              </p>
+            </div>
+            <div className="space-y-6">
+              {geoAssets.suggested_faqs.map((faq: { question: string; answer: string }, idx: number) => (
+                <Card key={idx} className="glass-effect border-white/5">
+                  <CardHeader className="p-6">
+                    <CardTitle className="text-xl text-primary">{faq.question}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-0 text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20 px-6">

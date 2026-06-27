@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import Script from "next/script";
+import geoAssets from "./geo-assets.json"; // Import the GEO assets
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "22 -Automations",
-  description: "Automate your workflows with 22 -Automations.",
+  title: "22-Automations | Automation & AI Solutions in GTA",
+  description: "Automate your workflows with 22-Automations. Expert web development, mobile apps, and custom AI integrations in Brampton & Greater Toronto Area.",
 };
 
 export default function RootLayout({
@@ -31,6 +32,15 @@ export default function RootLayout({
           crossOrigin="anonymous"
           src="//unpkg.com/same-runtime/dist/index.global.js"
         />
+        {/* Dynamic GEO Schema Injection */}
+        {geoAssets && geoAssets.json_ld_schema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(geoAssets.json_ld_schema),
+            }}
+          />
+        )}
       </head>
       <body suppressHydrationWarning className="antialiased">
         <ClientBody>{children}</ClientBody>
