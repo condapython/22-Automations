@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import {
   Radio,
@@ -14,13 +14,15 @@ import {
   X,
   ExternalLink,
   ChevronDown,
-  ShieldCheck,
-  Cpu,
-  Layers,
   Building2,
   Home as HomeIcon,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  ShieldAlert,
+  Sliders,
+  Check,
+  Zap,
+  Target
 } from 'lucide-react'
 
 interface HardwareSensingProductProps {
@@ -42,18 +44,27 @@ export default function HardwareSensingProduct({
   // Form inputs state
   const todayStr = new Date().toISOString().split('T')[0]
   const [formData, setFormData] = useState({
+    requestType: '30-Day Pilot Unit',
     companyName: '',
     userName: '',
     email: '',
     phone: '',
     availableDate: todayStr,
-    availableTime: '10:00'
+    availableTime: '10:00',
+    notes: ''
   })
 
   const RECIPIENT_EMAIL = 'automations.22@outlook.com'
 
-  const openModal = () => {
+  const getDeploymentLabel = (mode: 'commercial' | 'residential') => {
+    return mode === 'commercial'
+      ? 'Commercial (Car-Wash, Fleet Bays & Industrial Entrances and Dock)'
+      : 'Residential (Smart Gates, Entry Doors & Garages)'
+  }
+
+  const openModal = (defaultType = '30-Day Pilot Unit') => {
     setFormStatus(null)
+    setFormData(prev => ({ ...prev, requestType: defaultType }))
     if (modalRef.current) {
       if (typeof modalRef.current.showModal === 'function') {
         modalRef.current.showModal()
@@ -73,7 +84,6 @@ export default function HardwareSensingProduct({
     }
   }
 
-  // Handle backdrop click to close dialog
   const handleDialogClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (modalRef.current) {
       const rect = modalRef.current.getBoundingClientRect()
@@ -89,7 +99,7 @@ export default function HardwareSensingProduct({
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -99,32 +109,37 @@ export default function HardwareSensingProduct({
     setIsSubmitting(true)
     setFormStatus(null)
 
-    const useLabel = deploymentMode === 'commercial' ? 'Commercial Use' : 'Residential Use'
-    const mailtoSubject = encodeURIComponent(`22 Automations Product Enquiry - ${useLabel} (${formData.companyName})`)
+    const useLabel = getDeploymentLabel(deploymentMode)
+    const mailtoSubject = encodeURIComponent(`IndusEye RS3 [${formData.requestType}] - ${formData.companyName}`)
     const mailtoBody = encodeURIComponent(
-      `22 Automations Product Consultation Request:\n` +
+      `IndusEye RS3 Technical Request:\n` +
       `----------------------------------------\n` +
+      `Request Type    : ${formData.requestType}\n` +
       `Selected Option : ${useLabel}\n` +
       `Company Name    : ${formData.companyName}\n` +
-      `User Name       : ${formData.userName}\n` +
+      `Contact Name    : ${formData.userName}\n` +
       `Email Address   : ${formData.email}\n` +
       `Phone Number    : ${formData.phone}\n` +
       `Preferred Date  : ${formData.availableDate}\n` +
-      `Preferred Time  : ${formData.availableTime}\n`
+      `Preferred Time  : ${formData.availableTime}\n` +
+      `Project Details : ${formData.notes}\n`
     )
     const mailtoUrl = `mailto:${RECIPIENT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`
 
     const payload = {
-      _subject: `New 22 Automations Hardware Enquiry (${useLabel})`,
+      _subject: `New IndusEye RS3 Request: ${formData.requestType} (${formData.companyName})`,
       _template: 'table',
       _captcha: 'false',
+      Product: 'IndusEye RS3',
+      Request_Type: formData.requestType,
       Deployment_Option: useLabel,
       Company_Name: formData.companyName,
-      User_Name: formData.userName,
+      Contact_Name: formData.userName,
       Email: formData.email,
       Phone_Number: formData.phone,
-      Available_Date: formData.availableDate,
-      Available_Time: formData.availableTime
+      Preferred_Date: formData.availableDate,
+      Preferred_Time: formData.availableTime,
+      Notes: formData.notes
     }
 
     try {
@@ -143,21 +158,23 @@ export default function HardwareSensingProduct({
       if (data && (data.success === 'true' || data.success === true)) {
         setFormStatus({
           type: 'success',
-          message: `✓ Your enquiry for ${useLabel} (${formData.availableDate} at ${formData.availableTime}) has been sent to ${RECIPIENT_EMAIL}. Our engineering team will contact you shortly.`
+          message: `✓ Success! Your request for "${formData.requestType}" has been delivered to ${RECIPIENT_EMAIL}. Our team will confirm the trial unit dispatch and integration setup.`
         })
         setFormData({
+          requestType: '30-Day Pilot Unit',
           companyName: '',
           userName: '',
           email: '',
           phone: '',
           availableDate: todayStr,
-          availableTime: '10:00'
+          availableTime: '10:00',
+          notes: ''
         })
       } else {
         window.location.href = mailtoUrl
         setFormStatus({
           type: 'info',
-          message: `Connecting with ${RECIPIENT_EMAIL} via your email client...`
+          message: `Redirecting to email client for direct confirmation with ${RECIPIENT_EMAIL}...`
         })
       }
     } catch {
@@ -174,7 +191,7 @@ export default function HardwareSensingProduct({
     <div className="w-full text-foreground font-sans">
       {/* Hero Section */}
       <section className="relative pt-12 pb-20 px-6 overflow-hidden">
-        {/* Background Radial Glow */}
+        {/* Ambient Glows */}
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] pointer-events-none -z-10" />
         <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[120px] pointer-events-none -z-10" />
 
@@ -184,27 +201,31 @@ export default function HardwareSensingProduct({
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-mono font-semibold tracking-wider uppercase">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                Car-Wash & Industrial Sensing Platform
+                Hardware Platform · IndusEye RS3
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-                Smarter sensing. <br />
-                <span className="text-gradient">Smoother flow.</span>
-              </h1>
+              <div className="space-y-2">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08]">
+                  Precise Identification, <br />
+                  <span className="text-gradient">Autonomous Flow.</span>
+                </h1>
+                <p className="text-lg sm:text-xl font-medium text-white/90">
+                  Engineered for Auto Spa's &amp; High-Duty Access.
+                </p>
+              </div>
 
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-                A compact, ruggedized sensing unit engineered for automated car-wash and smart access environments.
-                Unifies 24 GHz radar detection, cat-eye optical verification, and ambient light control into one reliable hardware platform.
+              <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+                A ruggedized sensing and access controller unifying 24 GHz millimeter-wave radar, HD cat-eye optical verification, and ambient light control. Designed to eliminate false triggers in dense soap mist, water jets, and heavy weather.
               </p>
 
-              {/* Deployment Option Selector */}
-              <div className="p-4 rounded-xl tech-border backdrop-blur-md max-w-md space-y-2">
+              {/* Deployment Option Selector (User Specified) */}
+              <div className="p-4 rounded-xl tech-border backdrop-blur-md max-w-xl space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="deployment-mode" className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                    Deployment Configuration
+                  <label htmlFor="deployment-mode" className="text-xs font-mono text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-primary" /> Select Deployment Environment
                   </label>
                   <span className="text-[11px] font-mono text-primary flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> Configurable Mode
+                    <Sparkles className="w-3 h-3" /> Live Preset
                   </span>
                 </div>
                 <div className="relative">
@@ -215,35 +236,40 @@ export default function HardwareSensingProduct({
                     id="deployment-mode"
                     value={deploymentMode}
                     onChange={(e) => setDeploymentMode(e.target.value as 'commercial' | 'residential')}
-                    className="w-full pl-10 pr-10 py-2.5 rounded-lg bg-secondary/60 border border-border text-foreground font-semibold text-sm appearance-none cursor-pointer focus:outline-none focus:border-primary transition-colors"
+                    className="w-full pl-10 pr-10 py-3 rounded-lg bg-secondary/80 border border-border text-foreground font-semibold text-xs sm:text-sm appearance-none cursor-pointer focus:outline-none focus:border-primary transition-colors leading-tight"
                   >
-                    <option value="commercial">Commercial Use (Car-Wash & Fleet Bays)</option>
-                    <option value="residential">Residential Use (Smart Gates & Garages)</option>
+                    <option value="commercial">
+                      Commercial (Car-Wash, Fleet Bays &amp; Industrial Entrances and Dock)
+                    </option>
+                    <option value="residential">
+                      Residential (Smart Gates, Entry Doors &amp; Garages)
+                    </option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Primary User-Selected CTA Button */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <button
                   type="button"
-                  onClick={openModal}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-primary text-primary-foreground font-bold text-sm tracking-wide hover:brightness-110 active:scale-[0.98] transition-all glow-effect"
+                  onClick={() => openModal('30-Day Pilot Unit')}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-bold text-sm tracking-wide hover:brightness-110 active:scale-[0.98] transition-all glow-effect shadow-[0_0_25px_rgba(0,255,255,0.4)]"
                 >
-                  Schedule Technical Consultation <ExternalLink className="w-4 h-4" />
+                  Request a 30-Day On-Site Pilot / Trial Unit <ArrowRight className="w-4 h-4" />
                 </button>
-                <a
-                  href="#specs-breakdown"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg border border-border bg-card/60 hover:bg-card text-foreground font-medium text-sm transition-all hover:border-primary/50"
+                <button
+                  type="button"
+                  onClick={() => openModal('Technical Consultation')}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-lg border border-border bg-card/60 hover:bg-card text-foreground font-medium text-sm transition-all hover:border-primary/50"
                 >
-                  Explore Specifications <ArrowRight className="w-4 h-4" />
-                </a>
+                  Schedule Consultation <ExternalLink className="w-4 h-4" />
+                </button>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground pt-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-                Engineered & assembled for demanding industrial conditions
+              <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground pt-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                Pre-calibrated for rapid mounting · Zero disruption to active wash bays
               </div>
             </div>
 
@@ -254,19 +280,24 @@ export default function HardwareSensingProduct({
                 <div className="relative w-full h-full flex items-center justify-center transition-transform duration-700 ease-out group-hover:scale-105">
                   <Image
                     src="/assets/products/product-enclosed.png"
-                    alt="22 Automations compact sensing unit in ruggedized enclosure"
+                    alt="IndusEye RS3 compact sensing unit in ruggedized enclosure"
                     width={440}
                     height={440}
                     priority
-                    className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
+                    className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)]"
                   />
                 </div>
 
                 {/* Floating Tag */}
-                <div className="absolute bottom-4 left-4 right-4 sm:right-auto px-4 py-2.5 rounded-xl tech-border bg-background/80 backdrop-blur-md shadow-xl text-xs space-y-0.5">
-                  <div className="font-bold text-foreground">Compact Integrated Enclosure</div>
+                <div className="absolute bottom-4 left-4 right-4 sm:right-auto px-4 py-3 rounded-xl tech-border bg-background/90 backdrop-blur-md shadow-2xl text-xs space-y-1">
+                  <div className="font-bold text-foreground flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    IndusEye RS3 Sensor Unit
+                  </div>
                   <div className="font-mono text-[11px] text-muted-foreground">
-                    {deploymentMode === 'commercial' ? 'Commercial Edition · Industrial Rating' : 'Residential Edition · Smart Access'}
+                    {deploymentMode === 'commercial'
+                      ? 'Commercial Bay & Dock Configuration'
+                      : 'Residential Smart Access Configuration'}
                   </div>
                 </div>
               </div>
@@ -278,7 +309,7 @@ export default function HardwareSensingProduct({
       {/* Technical Specifications Bar */}
       <section className="relative -mt-6 px-6 z-10" id="specs-breakdown">
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-xl tech-border bg-card/70 backdrop-blur-xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-xl tech-border bg-card/80 backdrop-blur-xl">
             <div className="p-4 border-r border-border/40 last:border-r-0">
               <div className="font-mono text-3xl font-extrabold text-primary">24 GHz</div>
               <div className="text-xs text-muted-foreground mt-1">Radar Sensing Frequency</div>
@@ -297,7 +328,7 @@ export default function HardwareSensingProduct({
             </div>
           </div>
           <p className="text-[11px] font-mono text-muted-foreground/80 mt-2 px-2">
-            *Approximately 500 kg-force as configured. Stated holding force subject to mounting substrate and testing conditions.
+            *Approximately 500 kg-force electromagnetic lock coupling. Rated for continuous high-duty access cycles.
           </p>
         </div>
       </section>
@@ -308,10 +339,10 @@ export default function HardwareSensingProduct({
           <div className="max-w-2xl space-y-3">
             <div className="text-xs font-mono uppercase tracking-wider text-primary">Core Capabilities</div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              Purpose-built for sensing, verification & access.
+              Built for harsh industrial &amp; wash bay environments.
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-              Every critical subsystem is integrated into one low-maintenance enclosure so car-wash operators and facility managers enjoy frictionless automation.
+              Optical sensors fail when blinded by detergent froth, dense mist, or sun glare. IndusEye RS3 solves this by pairing high-frequency radar detection with synchronized optical confirmation.
             </p>
           </div>
 
@@ -320,9 +351,9 @@ export default function HardwareSensingProduct({
               <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Radio className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">24 GHz Radar Sensing</h3>
+              <h3 className="text-lg font-bold text-white">24 GHz FMCW Radar</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Reliable millimeter-wave detection that ignores steam, soap spray, water droplets, and direct sunlight.
+                Penetrates water curtains, soap foam, steam clouds, and temperature extremes without false triggers.
               </p>
             </div>
 
@@ -330,9 +361,9 @@ export default function HardwareSensingProduct({
               <div className="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 text-accent flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Eye className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">HD Optical Verification</h3>
+              <h3 className="text-lg font-bold text-white">Cat-Eye HD Optical</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Integrated cat-eye lens delivers wide-angle visual confirmation alongside radar telemetry for complete vehicle tracking.
+                Ultra-wide cat-eye lens delivers simultaneous visual telemetry to verify vehicle entry clearance.
               </p>
             </div>
 
@@ -340,9 +371,9 @@ export default function HardwareSensingProduct({
               <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Sun className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Ambient Light Sensor</h3>
+              <h3 className="text-lg font-bold text-white">Ambient Light Integration</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Dynamic luminosity detection triggers entrance bay illumination and ensures consistent camera contrast in day or night cycles.
+                Automatic ambient luminosity sensors trigger wash bay entry illumination and adjust optical exposure dynamically.
               </p>
             </div>
 
@@ -350,9 +381,9 @@ export default function HardwareSensingProduct({
               <div className="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 text-accent flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Box className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-white">Compact Form Factor</h3>
+              <h3 className="text-lg font-bold text-white">1000 lb Lock Coupling</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Small footprint designed for direct mounting on wash gantries, overhead tracks, gate posts, and bollards.
+                Engineered for rapid integration with 1000 lb magnetic locks and automatic industrial gate motors.
               </p>
             </div>
           </div>
@@ -368,14 +399,14 @@ export default function HardwareSensingProduct({
               <div className="tech-border rounded-2xl p-6 bg-card/30 flex items-center justify-center overflow-hidden">
                 <Image
                   src="/assets/products/product-pcb.png"
-                  alt="High-density printed circuit board of 22 Automations sensing module"
+                  alt="High-density printed circuit board of IndusEye RS3 module"
                   width={500}
                   height={400}
                   className="object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.7)]"
                 />
               </div>
               <div className="absolute top-4 left-4 px-3 py-1 rounded bg-black/70 backdrop-blur-md text-[11px] font-mono text-primary border border-primary/30">
-                PCB ARCHITECTURE // REV 2.2
+                INDUSEYE RS3 // PCB ARCHITECTURE REV 2.2
               </div>
             </div>
 
@@ -387,16 +418,16 @@ export default function HardwareSensingProduct({
                 <span className="text-gradient">Integrated inside.</span>
               </h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                Rather than daisy-chaining disparate sensors, the 22 Automations unit consolidates microprocessing, power management, and high-frequency RF front-ends onto an engineered single-board architecture.
+                IndusEye RS3 integrates microcontroller logic, power management, RF front-ends, and relay drivers onto an engineered single-board PCB assembly.
               </p>
 
               <div className="space-y-4 pt-2">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-sm text-white">Single-Board Microcontroller & Power Regulation</h4>
+                    <h4 className="font-bold text-sm text-white">On-Board Controller &amp; Relay Drivers</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Integrated high-performance controller handles on-device radar filtering and relay triggering with onboard transient voltage protection.
+                      Handles millisecond radar filtering, optical trigger handshakes, and gate opening pulses directly at the edge.
                     </p>
                   </div>
                 </div>
@@ -404,9 +435,9 @@ export default function HardwareSensingProduct({
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-sm text-white">High-Speed Radar & Camera Bus</h4>
+                    <h4 className="font-bold text-sm text-white">PLC &amp; Gate Bus Interfaces</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Direct low-latency header channels telemetry into PLC controllers or facility management automation systems.
+                      Compatible with standard industrial PLC controllers, CAN bus systems, and external magnetic access relays.
                     </p>
                   </div>
                 </div>
@@ -414,9 +445,9 @@ export default function HardwareSensingProduct({
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-sm text-white">Industrial Serviceability</h4>
+                    <h4 className="font-bold text-sm text-white">Modular Field Serviceability</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Modular internal layout allows quick field inspection, firmware updates, and simple connector swap-outs.
+                      Toolless quick-disconnect terminals allow field technicians to service or swap units in under 5 minutes.
                     </p>
                   </div>
                 </div>
@@ -430,12 +461,12 @@ export default function HardwareSensingProduct({
       <section className="py-24 px-6">
         <div className="container mx-auto max-w-6xl space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="text-xs font-mono uppercase tracking-wider text-primary">From Components to System</div>
+            <div className="text-xs font-mono uppercase tracking-wider text-primary">Precision Mechanical Stack</div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              Precision mechanical assembly.
+              Layered industrial construction.
             </h2>
             <p className="text-muted-foreground text-sm">
-              An exploded view of the sealed enclosure, internal dampers, and vibration-resistant mounting stack.
+              Sealed enclosure, internal vibration isolators, and durable mounting bracket engineered for continuous duty.
             </p>
           </div>
 
@@ -443,13 +474,13 @@ export default function HardwareSensingProduct({
           <div className="tech-border rounded-2xl p-8 bg-card/20 flex items-center justify-center relative">
             <Image
               src="/assets/products/product-exploded.png"
-              alt="Exploded mechanical view of the 22 Automations sensing module"
+              alt="Exploded mechanical view of the IndusEye RS3 sensing module"
               width={700}
               height={450}
               className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
             />
             <div className="absolute bottom-4 right-4 px-3 py-1.5 rounded-lg bg-black/60 backdrop-blur-md text-[11px] font-mono text-muted-foreground border border-white/10">
-              LAYERED EXPLODED SCHEMATIC
+              INDUSEYE RS3 // MECHANICAL STACK
             </div>
           </div>
 
@@ -458,22 +489,22 @@ export default function HardwareSensingProduct({
             <div className="p-5 rounded-xl tech-border bg-card/40 space-y-2">
               <div className="text-xs font-mono text-primary font-bold">01 · ENCLOSURE</div>
               <div className="text-sm font-bold text-white">Protective Shell</div>
-              <p className="text-xs text-muted-foreground">Rugged polymer chassis prepared with weather seals.</p>
+              <p className="text-xs text-muted-foreground">Chemical &amp; detergent resistant polymer housing with silicone perimeter seals.</p>
             </div>
             <div className="p-5 rounded-xl tech-border bg-card/40 space-y-2">
               <div className="text-xs font-mono text-accent font-bold">02 · ELECTRONICS</div>
-              <div className="text-sm font-bold text-white">PCB Placement</div>
-              <p className="text-xs text-muted-foreground">Single-board controller aligned and secured to internal mounts.</p>
+              <div className="text-sm font-bold text-white">PCB Alignment</div>
+              <p className="text-xs text-muted-foreground">High-density controller anchored on anti-vibration standoffs.</p>
             </div>
             <div className="p-5 rounded-xl tech-border bg-card/40 space-y-2">
               <div className="text-xs font-mono text-primary font-bold">03 · INTEGRATION</div>
-              <div className="text-sm font-bold text-white">Optics & Radar Link</div>
-              <p className="text-xs text-muted-foreground">Cat-eye lens coupled to aperture and radar wave guides seated.</p>
+              <div className="text-sm font-bold text-white">Optical Coupling</div>
+              <p className="text-xs text-muted-foreground">Cat-eye optical lens and 24 GHz antenna waveguide calibrated.</p>
             </div>
             <div className="p-5 rounded-xl tech-border bg-card/40 space-y-2">
               <div className="text-xs font-mono text-emerald-400 font-bold">04 · VALIDATION</div>
-              <div className="text-sm font-bold text-white">Testing & Seal Check</div>
-              <p className="text-xs text-muted-foreground">Bench-tested for holding force, radar calibration, and seal integrity.</p>
+              <div className="text-sm font-bold text-white">Holding &amp; Seal Test</div>
+              <p className="text-xs text-muted-foreground">Pre-calibrated holding-force test and pressure-sealed before shipment.</p>
             </div>
           </div>
         </div>
@@ -485,13 +516,13 @@ export default function HardwareSensingProduct({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
               <div className="text-xs font-mono uppercase tracking-wider text-emerald-400">
-                Local Manufacturing & Circular Materials
+                Local Manufacturing &amp; Circular Materials
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
-                Better materials start with thoughtful engineering.
+                Better materials start with thoughtful design.
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                By leveraging locally sourced, high-durability recycled polymers for enclosure tooling, 22 Automations diverts technical plastic waste while cutting logistics carbon emissions.
+                By manufacturing enclosures from locally sourced recycled industrial polymers in the Greater Toronto Area, 22 Automations pairs environmental responsibility with ruggedized physical endurance.
               </p>
 
               <div className="space-y-4 pt-2">
@@ -500,9 +531,9 @@ export default function HardwareSensingProduct({
                     ✓
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white">Local Canadian Production</h4>
+                    <h4 className="font-bold text-sm text-white">Local Ontario Production</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Shortened manufacturing chain based right in the Greater Toronto Area for rapid parts turnaround.
+                      Fast local parts availability, direct engineering support, and rapid turnaround across Canada.
                     </p>
                   </div>
                 </div>
@@ -514,7 +545,7 @@ export default function HardwareSensingProduct({
                   <div>
                     <h4 className="font-bold text-sm text-white">Recovered Polymer Feedstock</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Engineered composite blends withstand impact, chemical wash detergents, and extreme temperature swings.
+                      Engineered composite blends withstand aggressive chemical washes, acidic detergents, and winter freezes.
                     </p>
                   </div>
                 </div>
@@ -524,9 +555,9 @@ export default function HardwareSensingProduct({
                     ✓
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white">Purpose-Fit Enclosure</h4>
+                    <h4 className="font-bold text-sm text-white">Purpose-Built Form Factor</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Low environmental footprint without compromising electronic shielding or structural holding force.
+                      Lightweight chassis design simplifies mounting on overhead tracks, gantries, and gate posts.
                     </p>
                   </div>
                 </div>
@@ -537,7 +568,7 @@ export default function HardwareSensingProduct({
               <div className="tech-border rounded-2xl p-6 bg-card/40 flex items-center justify-center">
                 <Image
                   src="/assets/products/product-enclosed.png"
-                  alt="Finished enclosure made with recycled polymer composite"
+                  alt="Finished IndusEye RS3 unit enclosure"
                   width={380}
                   height={380}
                   className="object-contain"
@@ -548,36 +579,39 @@ export default function HardwareSensingProduct({
         </div>
       </section>
 
-      {/* CTA Banner */}
+      {/* CTA Banner: 30-Day Pilot Unit */}
       <section className="py-16 px-6 bg-primary/10 border-y border-primary/20">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="space-y-2 text-center lg:text-left">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-primary/20 text-primary text-xs font-mono uppercase">
+                <Zap className="w-3.5 h-3.5" /> Risk-Free Facility Evaluation
+              </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Planning a smarter car-wash or access setup?
+                Ready to test IndusEye RS3 in your wash bay or entrance?
               </h2>
               <p className="text-sm text-muted-foreground max-w-xl">
-                Consult with our engineering team regarding pinouts, integration with existing PLC controllers, and trial units.
+                Get a pre-configured 30-day on-site pilot unit shipped to your facility with full integration guidance from our Ontario engineering desk.
               </p>
             </div>
             <button
               type="button"
-              onClick={openModal}
+              onClick={() => openModal('30-Day Pilot Unit')}
               className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-bold text-sm tracking-wide hover:brightness-110 active:scale-[0.98] transition-all glow-effect shrink-0 flex items-center gap-2"
             >
-              Contact 22 Automations <ExternalLink className="w-4 h-4" />
+              Request a 30-Day On-Site Pilot Unit <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
       </section>
 
-      {/* Consultation & Availability Modal Dialog (Accessible Native Dialog) */}
+      {/* Accessible Consultation / Pilot Request Modal Dialog */}
       <dialog
         ref={modalRef}
         id="va-enquiry-modal"
         aria-labelledby="va-modal-title"
         onClick={handleDialogClick}
-        className="w-full max-w-xl p-0 bg-transparent rounded-2xl shadow-2xl backdrop:bg-black/80 backdrop:backdrop-blur-md"
+        className="w-full max-w-xl p-0 bg-transparent rounded-2xl shadow-2xl backdrop:bg-black/85 backdrop:backdrop-blur-md"
       >
         <div className="tech-border bg-card/95 backdrop-blur-2xl p-6 sm:p-8 rounded-2xl border border-white/20 text-foreground relative">
           {/* Close button */}
@@ -593,71 +627,88 @@ export default function HardwareSensingProduct({
           {/* Modal Header */}
           <div className="space-y-2 mb-6">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-mono uppercase tracking-wider">
-              Product Enquiry & Consultation
+              IndusEye RS3 · Official Dispatch Desk
             </div>
             <h3 id="va-modal-title" className="text-2xl font-bold text-white">
-              Schedule Your Technical Consultation
+              {formData.requestType === '30-Day Pilot Unit'
+                ? 'Request a 30-Day On-Site Pilot Unit'
+                : 'Schedule a Technical Consultation'}
             </h3>
             <p className="text-xs text-muted-foreground">
-              Select your preferred date & time. Our GTA engineering team directly reviews all submissions via{' '}
+              Directly routed to our Ontario hardware engineering team at{' '}
               <strong className="text-primary font-mono">{RECIPIENT_EMAIL}</strong>.
             </p>
-          </div>
-
-          {/* Active Mode Pill */}
-          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/60 border border-border/80 text-xs font-mono text-muted-foreground mb-6">
-            <span className="w-2 h-2 rounded-full bg-primary" />
-            Active Configuration:{' '}
-            <strong className="text-white capitalize">{deploymentMode} Use</strong>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
+              <label htmlFor="modal-request-type" className="text-xs font-mono text-muted-foreground uppercase">
+                Request Purpose
+              </label>
+              <select
+                id="modal-request-type"
+                name="requestType"
+                value={formData.requestType}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2.5 rounded-lg bg-secondary/80 border border-border text-foreground text-sm font-semibold focus:outline-none focus:border-primary"
+              >
+                <option value="30-Day Pilot Unit">30-Day On-Site Pilot / Trial Unit</option>
+                <option value="Technical Consultation">Schedule Technical Consultation</option>
+                <option value="OEM Volume Pricing">Request OEM &amp; Distributor Pricing</option>
+                <option value="Datasheet Download">Datasheet &amp; Pinout Package</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
               <label htmlFor="modal-deployment" className="text-xs font-mono text-muted-foreground uppercase">
-                Selected Application Environment
+                Target Application Environment
               </label>
               <select
                 id="modal-deployment"
                 value={deploymentMode}
                 onChange={(e) => setDeploymentMode(e.target.value as 'commercial' | 'residential')}
-                className="w-full px-3 py-2.5 rounded-lg bg-secondary/60 border border-border text-foreground text-sm font-semibold focus:outline-none focus:border-primary"
+                className="w-full px-3 py-2.5 rounded-lg bg-secondary/80 border border-border text-foreground text-sm font-semibold focus:outline-none focus:border-primary"
               >
-                <option value="commercial">Commercial Use (Car-Wash, Fleet, Industrial Gates)</option>
-                <option value="residential">Residential Use (Smart Gates, Private Access)</option>
+                <option value="commercial">
+                  Commercial (Car-Wash, Fleet Bays &amp; Industrial Entrances and Dock)
+                </option>
+                <option value="residential">
+                  Residential (Smart Gates, Entry Doors &amp; Garages)
+                </option>
               </select>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label htmlFor="companyName" className="text-xs font-mono text-muted-foreground uppercase">
-                  Company / Organization
+                  Company / Facility Name
                 </label>
                 <input
                   type="text"
                   id="companyName"
                   name="companyName"
                   required
-                  placeholder="Facility or Company name"
+                  placeholder="e.g. Metro Auto Spa"
                   value={formData.companyName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
                 />
               </div>
 
               <div className="space-y-1">
                 <label htmlFor="userName" className="text-xs font-mono text-muted-foreground uppercase">
-                  Your Full Name
+                  Contact Person
                 </label>
                 <input
                   type="text"
                   id="userName"
                   name="userName"
                   required
-                  placeholder="e.g. John Doe"
+                  placeholder="e.g. Marcus Chen"
                   value={formData.userName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
                 />
               </div>
             </div>
@@ -665,23 +716,23 @@ export default function HardwareSensingProduct({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label htmlFor="email" className="text-xs font-mono text-muted-foreground uppercase">
-                  Business Email
+                  Email Address
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   required
-                  placeholder="you@domain.com"
+                  placeholder="you@autospa.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
                 />
               </div>
 
               <div className="space-y-1">
                 <label htmlFor="phone" className="text-xs font-mono text-muted-foreground uppercase">
-                  Phone Number
+                  Direct Phone Number
                 </label>
                 <input
                   type="tel"
@@ -691,7 +742,7 @@ export default function HardwareSensingProduct({
                   placeholder="+1 (437) 000-0000"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary placeholder:text-muted-foreground/50"
                 />
               </div>
             </div>
@@ -699,7 +750,7 @@ export default function HardwareSensingProduct({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
                 <label htmlFor="availableDate" className="text-xs font-mono text-muted-foreground uppercase flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-primary" /> Preferred Date
+                  <Calendar className="w-3 h-3 text-primary" /> Target Date
                 </label>
                 <input
                   type="date"
@@ -709,7 +760,7 @@ export default function HardwareSensingProduct({
                   required
                   value={formData.availableDate}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary cursor-pointer"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary cursor-pointer"
                 />
               </div>
 
@@ -724,7 +775,7 @@ export default function HardwareSensingProduct({
                   required
                   value={formData.availableTime}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-sm focus:outline-none focus:border-primary cursor-pointer"
+                  className="w-full px-3 py-2 rounded-lg bg-secondary/80 border border-border text-foreground text-sm focus:outline-none focus:border-primary cursor-pointer"
                 />
               </div>
             </div>
@@ -745,13 +796,13 @@ export default function HardwareSensingProduct({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-2 py-3.5 rounded-lg bg-primary text-primary-foreground font-bold text-sm tracking-wide hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full mt-2 py-4 rounded-lg bg-primary text-primary-foreground font-bold text-sm tracking-wide hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {isSubmitting ? (
-                'Submitting Enquiry...'
+                'Submitting Request...'
               ) : (
                 <>
-                  Send Enquiry to 22 Automations <Send className="w-4 h-4" />
+                  Submit Request for IndusEye RS3 <Send className="w-4 h-4" />
                 </>
               )}
             </button>

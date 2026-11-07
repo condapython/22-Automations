@@ -7,19 +7,19 @@ import { ArrowRight, ExternalLink } from 'lucide-react'
 
 export const metadata = {
   title: "Products & Hardware Solutions | 22-Automations",
-  description: "Explore 22-Automations products: 24 GHz radar sensing hardware for car-wash automation, AI-GEO spatial models, POS CRM platforms, and IoT cloud workflows."
+  description: "Explore 22-Automations products: IndusEye RS3 radar sensing hardware for auto spas and high-duty access, AI-GEO spatial models, POS CRM platforms, and IoT cloud workflows."
 }
 
 export default function Products() {
   const products = [
     {
-      title: "22-SensLock Radar S3",
-      category: "Car-Wash & Hardware Sensing",
-      description: "Millimeter-wave 24 GHz radar sensing unit with integrated cat-eye HD camera, ambient light sensor, and 1000 lb holding force rating for car-wash automation and industrial access.",
+      title: "IndusEye RS3",
+      category: "Auto Spa & Access Hardware",
+      description: "Millimeter-wave 24 GHz radar sensing unit with integrated cat-eye HD camera, ambient light sensor, and 1000 lb holding force rating for auto spas, fleet bays, and high-duty access.",
       image: "/assets/products/product-enclosed.png",
       features: ["24 GHz FMCW Radar", "HD Cat-Eye Optical Camera", "Light-Sensor Automation", "1000 lb Holding Force"],
       benefits: ["Steam & spray immune", "Zero false triggers", "Recycled polymer housing"],
-      price: "Enquire for Pricing",
+      price: "Request Pilot Unit",
       link: "/products/sensing-unit",
       isHardware: true
     },
@@ -87,7 +87,7 @@ export default function Products() {
               <Link href="/products" className="text-primary">Products</Link>
               <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Radar Sensor
+                IndusEye RS3
               </Link>
               <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
             </div>
@@ -101,7 +101,7 @@ export default function Products() {
         </div>
       </nav>
 
-      {/* Featured Flagship Product Section: 22-SensLock Radar S3 */}
+      {/* Featured Flagship Product Section: IndusEye RS3 */}
       <div className="pt-24 border-b border-border/40">
         <HardwareSensingProduct />
       </div>
@@ -128,7 +128,7 @@ export default function Products() {
           <div className="text-center mb-16 space-y-3">
             <div className="text-xs font-mono uppercase tracking-wider text-primary">Comprehensive Catalog</div>
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-              Industrial Hardware & Software Solutions
+              Industrial Hardware &amp; Software Solutions
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto">
               Engineered systems built to eliminate bottlenecks, automate sensing triggers, and deliver measurable operational ROI.
@@ -205,7 +205,7 @@ export default function Products() {
                     {product.link ? (
                       <Link href={product.link} className="flex-1">
                         <Button variant="default" size="sm" className="w-full text-xs font-bold gap-1">
-                          {product.isHardware ? 'View Sensor Page' : 'Learn More'} <ArrowRight className="w-3.5 h-3.5" />
+                          {product.isHardware ? 'IndusEye RS3 Deep Dive' : 'Learn More'} <ArrowRight className="w-3.5 h-3.5" />
                         </Button>
                       </Link>
                     ) : (
@@ -247,7 +247,7 @@ export default function Products() {
                 <p className="text-xs text-muted-foreground">ESP32-S3, STM32, CAN Bus, and Modbus RTU integration.</p>
               </div>
               <div className="p-4 rounded-lg bg-card/40 border border-border/40">
-                <div className="text-sm font-bold text-accent mb-1">Tooling & Enclosures</div>
+                <div className="text-sm font-bold text-accent mb-1">Tooling &amp; Enclosures</div>
                 <p className="text-xs text-muted-foreground">Rapid 3D prototype to injection molded recycled polymer housings.</p>
               </div>
               <div className="p-4 rounded-lg bg-card/40 border border-border/40">
@@ -256,14 +256,14 @@ export default function Products() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link href="/contact">
+              <Link href="/products/sensing-unit">
                 <Button size="lg" className="text-sm font-bold px-8 py-6 glow-effect">
-                  Request Technical Proposal
+                  Request a 30-Day Pilot Unit
                 </Button>
               </Link>
-              <Link href="/products/sensing-unit">
+              <Link href="/contact">
                 <Button size="lg" variant="outline" className="text-sm font-bold px-8 py-6 border-border hover:border-primary">
-                  View Sensor Deep Dive
+                  Speak With an Engineer
                 </Button>
               </Link>
             </div>
@@ -288,16 +288,16 @@ export default function Products() {
             22-Automations
           </Link>
           <p className="text-xs font-mono text-muted-foreground max-w-md mx-auto">
-            Industrial Automation, Embedded Radar Hardware & AI-Powered Operations.
+            Industrial Automation, Embedded Radar Hardware &amp; AI-Powered Operations.
           </p>
           <div className="flex justify-center space-x-6 text-xs text-muted-foreground">
             <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <Link href="/products/sensing-unit" className="hover:text-primary transition-colors">SensLock Radar</Link>
+            <Link href="/products/sensing-unit" className="hover:text-primary transition-colors">IndusEye RS3</Link>
             <Link href="/about" className="hover:text-primary transition-colors">About</Link>
             <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
           </div>
           <div className="text-[11px] font-mono text-muted-foreground/60">
-            © 22-Automations. All rights reserved. Brampton & Greater Toronto Area, ON.
+            © 22-Automations. All rights reserved. Brampton &amp; Greater Toronto Area, ON.
           </div>
         </div>
       </footer>

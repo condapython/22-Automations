@@ -2,8 +2,8 @@ import Link from 'next/link'
 import HardwareSensingProduct from '@/components/products/HardwareSensingProduct'
 
 export const metadata = {
-  title: "22-SensLock Radar S3 | Car-Wash & Smart Access Hardware | 22-Automations",
-  description: "Millimeter-wave 24 GHz radar sensing unit with HD optical cat-eye camera and ambient light control. Engineered for car-wash automation, industrial gates, and high-duty access."
+  title: "IndusEye RS3 | Auto Spa & High-Duty Access Hardware | 22-Automations",
+  description: "Precise Identification, Autonomous Flow. Engineered for Auto Spa's & High-Duty Access. 24 GHz millimeter-wave radar, HD cat-eye camera, and 1000 lb holding force."
 }
 
 export default function SensingUnitPage() {
@@ -33,7 +33,7 @@ export default function SensingUnitPage() {
                 href="/contact"
                 className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-xs tracking-wider uppercase hover:brightness-110 transition-all glow-effect"
               >
-                Get Started
+                Request Pilot Unit
               </Link>
             </div>
           </div>
@@ -52,7 +52,7 @@ export default function SensingUnitPage() {
             22-Automations
           </Link>
           <p className="text-xs font-mono text-muted-foreground max-w-md mx-auto">
-            Industrial IoT, Embedded Sensors & AI Workflows. Greater Toronto Area, Ontario.
+            Industrial IoT, Embedded Sensors &amp; AI Workflows. Greater Toronto Area, Ontario.
           </p>
           <div className="flex justify-center space-x-6 text-xs text-muted-foreground pt-2">
             <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
