@@ -12,10 +12,14 @@ export default function About() {
             <Link href="/" className="text-2xl font-bold text-gradient">
               22-Automations
             </Link>
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-8 text-sm font-medium">
               <Link href="/#services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link>
               <Link href="/about" className="text-primary">About</Link>
               <Link href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link>
+              <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Radar Sensor
+              </Link>
               <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
             </div>
           </div>

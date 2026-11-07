@@ -75,11 +75,16 @@ export default function Portfolio() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-2xl font-bold text-gradient">
-              NeuraFlow
+              22-Automations
             </Link>
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-8 text-sm font-medium">
               <Link href="/#services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link>
               <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
+              <Link href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link>
+              <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Radar Sensor
+              </Link>
               <Link href="/portfolio" className="text-primary">Portfolio</Link>
               <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
             </div>
@@ -200,7 +205,7 @@ export default function Portfolio() {
                 What Our <span className="text-gradient">Clients Say</span>
               </h3>
               <blockquote className="text-xl text-muted-foreground mb-6 italic">
-                "NeuraFlow transformed our entire business model. Their AI solution increased our efficiency by 340%
+                "22-Automations transformed our entire business model. Their AI solution increased our efficiency by 340%
                 and opened up revenue streams we never thought possible."
               </blockquote>
               <div className="flex items-center justify-center space-x-4">
@@ -247,7 +252,7 @@ export default function Portfolio() {
       <footer className="py-12 px-6 border-t border-border/50">
         <div className="container mx-auto text-center">
           <Link href="/" className="text-2xl font-bold text-gradient mb-4 inline-block">
-            NeuraFlow
+            22-Automations
           </Link>
           <p className="text-muted-foreground mb-6">
             Crafting the digital future, one innovation at a time.

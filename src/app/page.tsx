@@ -126,7 +126,7 @@ export default function Home() {
             </Card>
 
             {/* Web Development */}
-            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float" style={{animationDelay: '1s'}}>
+            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float" style={{ animationDelay: '1s' }}>
               <CardHeader>
                 <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-4 glow-effect">
                   <div className="w-8 h-8 border-2 border-accent rounded-full relative">
@@ -150,7 +150,7 @@ export default function Home() {
             </Card>
 
             {/* AI Solutions */}
-            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float" style={{animationDelay: '2s'}}>
+            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float" style={{ animationDelay: '2s' }}>
               <CardHeader>
                 <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4 glow-effect">
                   <div className="w-8 h-8 relative">
@@ -174,7 +174,7 @@ export default function Home() {
             </Card>
 
             {/* IOT Solutions */}
-            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float relative overflow-hidden" style={{animationDelay: '3s'}}>
+            <Card className="glass-effect hover:glow-effect transition-all duration-300 animate-float relative overflow-hidden" style={{ animationDelay: '3s' }}>
               <CardHeader>
                 <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 glow-effect relative">
                   <div className="w-8 h-8 border-2 border-primary rounded-md relative flex items-center justify-center">

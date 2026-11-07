@@ -1,23 +1,27 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Oxanium, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import Script from "next/script";
 import geoAssets from "./geo-assets.json"; // Import the GEO assets
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const oxanium = Oxanium({
+  variable: "--font-oxanium",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-source-code-pro",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "22-Automations | Automation & AI Solutions in GTA",
-  description: "Automate your workflows with 22-Automations. Expert web development, mobile apps, and custom AI integrations in Brampton & Greater Toronto Area.",
+  title: "22-Automations | Automation, Robotics & AI Systems in GTA",
+  description: "Precision sensing, industrial automation, and custom AI workflows with 22-Automations. Expert IoT engineering, radar hardware, and mobile platforms.",
 };
 
 export default function RootLayout({
@@ -26,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${oxanium.variable} ${sourceCodePro.variable} font-sans`}>
       <head>
         <Script
           crossOrigin="anonymous"
@@ -42,7 +46,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body suppressHydrationWarning className="antialiased">
+      <body suppressHydrationWarning className="antialiased bg-background text-foreground">
         <ClientBody>{children}</ClientBody>
       </body>
     </html>
