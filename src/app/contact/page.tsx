@@ -9,7 +9,11 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import ParticleSystem from '@/components/ParticleSystem'
 import { ContactFormSchema } from '@/lib/validations/contact'
+import { Mail, Phone, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react'
 
 interface FormData {
   name: string
@@ -47,9 +51,9 @@ export default function Contact() {
         return value.length < 2 ? 'Name must be at least 2 characters' : ''
       case 'email':
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        return !emailRegex.test(value) ? 'Please enter a valid email' : ''
+        return !emailRegex.test(value) ? 'Please enter a valid business email' : ''
       case 'company':
-        return value.length < 2 ? 'Company name is required' : ''
+        return value.length < 2 ? 'Company / Organization name is required' : ''
       case 'message':
         return value.length < 10 ? 'Message must be at least 10 characters' : ''
       default:
@@ -112,7 +116,7 @@ export default function Contact() {
     }
 
     const RECIPIENT_EMAIL = 'automations.22@outlook.com'
-    const mailtoSubject = encodeURIComponent(`Enterprise Contact Inquiry: ${formData.project || 'General'} (${formData.company})`)
+    const mailtoSubject = encodeURIComponent(`Enterprise Inquiry: ${formData.project || 'General'} (${formData.company})`)
     const mailtoBody = encodeURIComponent(
       `Enterprise Contact Inquiry:\n` +
       `----------------------------------------\n` +
@@ -165,229 +169,188 @@ export default function Contact() {
 
   const contactInfo = [
     {
-      title: "Email Us",
-      description: "Get in touch via email",
+      title: "Direct Email",
+      description: "Enterprise inquiries & RFQs",
       value: "automations.22@outlook.com",
-      icon: "📧"
+      href: "mailto:automations.22@outlook.com",
+      icon: Mail
     },
     {
-      title: "Call Us",
-      description: "Speak with our team",
+      title: "Direct Phone",
+      description: "Direct line for commercial clients",
       value: "+1 (437) 808-4197",
-      icon: "📞"
+      href: "tel:4378084197",
+      icon: Phone
     },
     {
-      title: "LinkedIn",
-      description: "Connect with us professionally",
-      value: "22-automations",
-      icon: "💼"
+      title: "Response SLA",
+      description: "Commercial evaluation requests",
+      value: "Within 24 Hours",
+      icon: Clock
     },
     {
-      title: "Response Time",
-      description: "We typically respond within",
-      value: "24 hours",
-      icon: "⚡"
+      title: "Deployment Security",
+      description: "Confidentiality & NDA coverage",
+      value: "CIA / SOC2 Strict",
+      icon: ShieldCheck
     }
   ]
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/80 flex items-center justify-center">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="text-center"
-        >
-          <div className="w-24 h-24 mx-auto mb-8 rounded-full bg-primary/20 flex items-center justify-center glow-effect">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl"
-            >
-              ✅
-            </motion.div>
-          </div>
-          <h1 className="text-4xl font-bold text-gradient mb-4">Message Sent!</h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Thank you for reaching out. We'll get back to you within 24 hours.
-          </p>
-          <Button onClick={() => setIsSubmitted(false)} className="glow-effect">
-            Send Another Message
-          </Button>
-        </motion.div>
+      <div className="min-h-screen bg-background text-foreground flex flex-col justify-between font-sans">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center px-6 py-32">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-center max-w-lg tech-border bg-card/60 p-10 rounded-2xl"
+          >
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center glow-effect border border-primary/30">
+              <CheckCircle2 className="w-10 h-10 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-3 font-mono tracking-tight">Transmission Received</h1>
+            <p className="text-muted-foreground mb-8 text-sm leading-relaxed">
+              Your inquiry has been encrypted and delivered to the enterprise engineering and sales desk. Our technical team will follow up within 24 hours.
+            </p>
+            <Button onClick={() => setIsSubmitted(false)} className="font-mono text-xs uppercase tracking-wider bg-primary text-black font-bold hover:brightness-110">
+              Submit Another Inquiry
+            </Button>
+          </motion.div>
+        </div>
+        <Footer />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/80">
+    <div className="min-h-screen bg-background text-foreground font-sans relative selection:bg-primary selection:text-black">
+      {/* Background Particle System */}
+      <ParticleSystem />
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-effect">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-gradient">
-              22-Automations
-            </Link>
-            <div className="hidden md:flex space-x-8 text-sm font-medium">
-              <Link href="/#services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
-              <Link href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link>
-              <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Radar Sensor
-              </Link>
-              <Link href="/contact" className="text-primary">Contact</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="container mx-auto text-center">
-          <Badge className="animate-pulse-glow mb-8" variant="secondary">
-            ⚡ Let's Build Something Amazing
+      <section className="pt-36 pb-16 px-6 relative z-10 border-b border-border/40">
+        <div className="container mx-auto text-center max-w-3xl">
+          <Badge className="mb-6 font-mono text-xs uppercase tracking-wider bg-primary/10 text-primary border border-primary/20" variant="secondary">
+            ⚡ Enterprise Engagement &amp; Procurement Desk
           </Badge>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-gradient">Get In Touch</span>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-4">
+            Connect With Our <span className="text-gradient">Engineering Team</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Ready to transform your business? We'd love to hear about your project and explore how we can help.
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            Request an IndusEye RS3 30-Day On-Site Pilot, initiate a multi-bay commercial fleet RFQ, or schedule an Enterprise AI Training cohort briefing.
           </p>
         </div>
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-12 px-6">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-6 mb-16">
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={index}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="glass-effect hover:glow-effect transition-all duration-300 text-center">
+      <section className="py-12 px-6 relative z-10 bg-secondary/10 border-b border-border/40">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {contactInfo.map((info, index) => {
+              const Icon = info.icon
+              return (
+                <Card key={index} className="tech-border bg-card/40 text-center hover:border-primary/50 transition-all duration-300">
                   <CardContent className="p-6">
-                    <div className="text-2xl mb-3">{info.icon}</div>
-                    <h3 className="font-semibold text-primary mb-1">{info.title}</h3>
-                    <p className="text-xs text-muted-foreground mb-2">{info.description}</p>
-                    <p className="text-sm font-medium">{info.value}</p>
+                    <div className="w-10 h-10 mx-auto mb-3 rounded-lg bg-primary/10 border border-primary/25 flex items-center justify-center text-primary">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-mono text-xs uppercase tracking-wider text-white font-bold mb-1">{info.title}</h3>
+                    <p className="text-[11px] text-muted-foreground mb-2">{info.description}</p>
+                    {info.href ? (
+                      <a href={info.href} className="text-xs font-mono font-medium text-primary hover:underline">
+                        {info.value}
+                      </a>
+                    ) : (
+                      <span className="text-xs font-mono font-medium text-white">{info.value}</span>
+                    )}
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Contact Form */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto max-w-4xl">
-          <div className="grid md:grid-cols-2 gap-16">
-            {/* Form */}
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-            >
-              <Card className="glass-effect glow-effect">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-gradient">Start Your Project</CardTitle>
-                  <CardDescription>
-                    Tell us about your vision and we'll make it reality.
+      {/* Contact Form Section */}
+      <section className="py-20 px-6 relative z-10">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-5 gap-12 items-start">
+            {/* Form Column */}
+            <div className="md:col-span-3">
+              <Card className="tech-border bg-card/60">
+                <CardHeader className="p-6 pb-4 border-b border-border/40">
+                  <CardTitle className="text-xl font-bold text-white font-mono tracking-tight">Initiate Inquiry / RFQ</CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground mt-1">
+                    Direct routing to enterprise account leads and senior automation engineers.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Name *</Label>
+                <CardContent className="p-6">
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="name" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Name *</Label>
                         <Input
                           id="name"
                           value={formData.name}
                           onChange={(e) => handleInputChange('name', e.target.value)}
-                          className={`glass-effect ${errors.name ? 'border-red-500' : ''}`}
+                          className={`bg-background/60 border-border/80 focus:border-primary text-sm ${errors.name ? 'border-red-500' : ''}`}
                           placeholder="Your full name"
                         />
-                        <AnimatePresence>
-                          {errors.name && (
-                            <motion.p
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="text-xs text-red-400"
-                            >
-                              {errors.name}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
+                        {errors.name && (
+                          <p className="text-[11px] text-red-400 font-mono">{errors.name}</p>
+                        )}
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email *</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="email" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Work Email *</Label>
                         <Input
                           id="email"
                           type="email"
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className={`glass-effect ${errors.email ? 'border-red-500' : ''}`}
-                          placeholder="your@email.com"
+                          className={`bg-background/60 border-border/80 focus:border-primary text-sm ${errors.email ? 'border-red-500' : ''}`}
+                          placeholder="corporate@company.com"
                         />
-                        <AnimatePresence>
-                          {errors.email && (
-                            <motion.p
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="text-xs text-red-400"
-                            >
-                              {errors.email}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
+                        {errors.email && (
+                          <p className="text-[11px] text-red-400 font-mono">{errors.email}</p>
+                        )}
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="company">Company *</Label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="company" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Organization *</Label>
                         <Input
                           id="company"
                           value={formData.company}
                           onChange={(e) => handleInputChange('company', e.target.value)}
-                          className={`glass-effect ${errors.company ? 'border-red-500' : ''}`}
-                          placeholder="Your company name"
+                          className={`bg-background/60 border-border/80 focus:border-primary text-sm ${errors.company ? 'border-red-500' : ''}`}
+                          placeholder="Company name"
                         />
-                        <AnimatePresence>
-                          {errors.company && (
-                            <motion.p
-                              initial={{ opacity: 0, y: -10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              className="text-xs text-red-400"
-                            >
-                              {errors.company}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
+                        {errors.company && (
+                          <p className="text-[11px] text-red-400 font-mono">{errors.company}</p>
+                        )}
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="budget">Budget Range</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="budget" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Budget Allocation</Label>
                         <select
                           id="budget"
                           value={formData.budget}
                           onChange={(e) => handleInputChange('budget', e.target.value)}
-                          className="glass-effect flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+                          className="flex h-9 w-full rounded-md border border-border/80 bg-background/60 px-3 py-1 text-sm text-foreground focus:outline-none focus:border-primary font-mono text-xs"
                         >
                           <option value="">Select budget range</option>
-                          <option value="25k-50k">$25k - $50k</option>
-                          <option value="50k-100k">$50k - $100k</option>
-                          <option value="100k-250k+">$100k - $250k+</option>
+                          <option value="pilot-evaluation">Pilot Evaluation ($2,500 – $5,000)</option>
+                          <option value="25k-50k">$25k – $50k (Single site / Initial cohort)</option>
+                          <option value="50k-100k">$50k – $100k (Multi-bay rollout / Full cohort)</option>
+                          <option value="100k-250k+">$100k – $250k+ (Enterprise fleet / Multi-facility)</option>
                         </select>
                       </div>
                     </div>
@@ -410,44 +373,35 @@ export default function Contact() {
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="project">Project Type</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="project" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Primary Requirement</Label>
                       <select
                         id="project"
                         value={formData.project}
                         onChange={(e) => handleInputChange('project', e.target.value)}
-                        className="glass-effect flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+                        className="flex h-9 w-full rounded-md border border-border/80 bg-background/60 px-3 py-1 text-sm text-foreground focus:outline-none focus:border-primary font-mono text-xs"
                       >
-                        <option value="">Select project type</option>
-                        <option value="induseye-pilot">IndusEye RS3 — 30-Day Evaluation Pilot</option>
-                        <option value="induseye-rollout">IndusEye RS3 — Multi-Bay / Fleet Rollout RFQ</option>
-                        <option value="ai-training-cohort">Enterprise AI Training — Engineering Cohort</option>
+                        <option value="">Select primary requirement</option>
+                        <option value="induseye-pilot">IndusEye RS3 — 30-Day On-Site Evaluation Pilot</option>
+                        <option value="induseye-rollout">IndusEye RS3 — Multi-Bay Car Wash / Fleet Rollout RFQ</option>
+                        <option value="ai-training-cohort">Enterprise AI Training — Engineering Workforce Cohort</option>
                         <option value="ai-training-executive">Enterprise AI Training — Executive Strategy Intensive</option>
-                        <option value="custom-hardware">Custom Industrial IoT & Embedded Automation</option>
+                        <option value="custom-hardware">Custom 24 GHz Industrial Sensor Fusion &amp; Embedded I/O</option>
                       </select>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Project Details *</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="message" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Deployment Details &amp; Objectives *</Label>
                       <Textarea
                         id="message"
                         value={formData.message}
                         onChange={(e) => handleInputChange('message', e.target.value)}
-                        className={`glass-effect min-h-[120px] ${errors.message ? 'border-red-500' : ''}`}
-                        placeholder="Tell us about your project, goals, and timeline..."
+                        className={`bg-background/60 border-border/80 focus:border-primary text-sm min-h-[120px] ${errors.message ? 'border-red-500' : ''}`}
+                        placeholder="Specify bay dimensions, wash chemical exposure, number of engineers to train, or target timeline..."
                       />
-                      <AnimatePresence>
-                        {errors.message && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className="text-xs text-red-400"
-                          >
-                            {errors.message}
-                          </motion.p>
-                        )}
-                      </AnimatePresence>
+                      {errors.message && (
+                        <p className="text-[11px] text-red-400 font-mono">{errors.message}</p>
+                      )}
                     </div>
 
                     {errors.form && (
@@ -457,110 +411,72 @@ export default function Contact() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full text-lg py-6 glow-effect"
+                      className="w-full font-mono text-xs uppercase tracking-wider bg-primary text-black font-bold py-6 hover:brightness-110 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
                     >
-                      {isSubmitting ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full"
-                        />
-                      ) : (
-                        'Send Message'
-                      )}
+                      {isSubmitting ? 'Transmitting Encrypted Payload...' : 'Submit Inquiry & Request Pilot'}
                     </Button>
                   </form>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
-            {/* Information */}
-            <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              className="space-y-8"
-            >
-              <div>
-                <h3 className="text-2xl font-bold text-gradient mb-4">Why Choose 22-Automations?</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center mt-1">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
-                    </div>
+            {/* Sidebar Column */}
+            <div className="md:col-span-2 space-y-6">
+              <Card className="tech-border bg-card/40 p-6 space-y-4">
+                <div className="font-mono text-xs uppercase tracking-wider text-primary font-bold">Why 22-Automations</div>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-primary">Expert Team</h4>
-                      <p className="text-sm text-muted-foreground">Former engineers from Tesla, Google, and Apple</p>
+                      <h4 className="font-bold text-xs text-white">Proven Field Uptime</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">99.98% detection reliability immune to steam, foam, and spray.</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center mt-1">
-                      <div className="w-3 h-3 bg-accent rounded-full"></div>
-                    </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-primary">Proven Results</h4>
-                      <p className="text-sm text-muted-foreground">200+ successful projects, 50M+ users impacted</p>
+                      <h4 className="font-bold text-xs text-white">Zero Third-Party Lock-in</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">Our AI Training imparts sovereign capabilities directly to your team.</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center mt-1">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
-                    </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="font-semibold text-primary">Fast Delivery</h4>
-                      <p className="text-sm text-muted-foreground">Agile methodology, MVP in 4-8 weeks</p>
+                      <h4 className="font-bold text-xs text-white">Rapid Field Evaluation</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">30-day pilot units ship configured for plug-and-play installation.</p>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <Card className="glass-effect">
-                <CardContent className="p-6">
-                  <h4 className="font-semibold text-primary mb-3">What Happens Next?</h4>
-                  <div className="space-y-3 text-sm text-muted-foreground">
-                    <div className="flex items-center space-x-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold">1</span>
-                      <span>We review your project requirements</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-xs font-bold">2</span>
-                      <span>Schedule a strategy call within 24 hours</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-bold">3</span>
-                      <span>Receive a detailed proposal and timeline</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold">4</span>
-                      <span>Start building your solution</span>
-                    </div>
-                  </div>
-                </CardContent>
               </Card>
-            </motion.div>
+
+              <Card className="tech-border bg-card/40 p-6">
+                <h4 className="font-mono text-xs uppercase tracking-wider text-accent font-bold mb-4">Procurement Timeline</h4>
+                <div className="space-y-3 font-mono text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[10px] font-bold">1</span>
+                    <span className="text-white">Technical Review (Within 24 Hours)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent flex items-center justify-center text-[10px] font-bold">2</span>
+                    <span className="text-white">Pilot Unit Dispatch / Curriculum Plan</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-secondary/20 text-foreground flex items-center justify-center text-[10px] font-bold">3</span>
+                    <span className="text-white">Field Evaluation / Cohort Launch</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">4</span>
+                    <span className="text-white">Full-Scale Facility Multi-Bay Rollout</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-border/50">
-        <div className="container mx-auto text-center">
-          <Link href="/" className="text-2xl font-bold text-gradient mb-4 inline-block">
-            22-Automations
-          </Link>
-          <p className="text-muted-foreground mb-6">
-            Automating success, one system at a time.
-          </p>
-          <div className="flex justify-center space-x-6 text-sm text-muted-foreground mb-4">
-            <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-          </div>
-          <div className="text-xs text-muted-foreground space-y-1">
-            <p>Email: <a href="mailto:automations.22@outlook.com" className="hover:text-primary transition-colors">automations.22@outlook.com</a></p>
-            <p>Mobile: <a href="tel:4378084197" className="hover:text-primary transition-colors">+1 (437) 808-4197</a></p>
-          </div>
-        </div>
-      </footer>
+      {/* Global Footer */}
+      <Footer />
     </div>
   )
 }

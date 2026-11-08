@@ -2,122 +2,164 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import ParticleSystem from '@/components/ParticleSystem'
+import { ArrowRight, CheckCircle2, ShieldCheck, Cpu, Radio, Award } from 'lucide-react'
+
+export const metadata = {
+  title: "Case Studies & Deployments | 22-Automations",
+  description: "Explore real-world enterprise deployments of IndusEye RS3 24 GHz FMCW radar sensing units and Enterprise AI Training cohorts across commercial auto spas, fleet hubs, and industrial facilities."
+}
 
 export default function Portfolio() {
   const projects = [
     {
-      title: "FinanceAI Pro",
-      category: "AI Solutions",
-      description: "Revolutionary trading algorithm that increased portfolio returns by 340% for a major investment firm.",
-      image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop",
-      technologies: ["TensorFlow", "Python", "React", "AWS"],
-      results: ["340% ROI increase", "99.7% accuracy rate", "$50M+ managed"],
-      link: "#"
+      title: "Commercial Car Wash Multi-Bay FMCW Radar Rollout",
+      category: "Industrial Hardware & Radar",
+      badgeIcon: Radio,
+      description: "Replaced failure-prone photoelectric optical sensors across 34 high-volume wash bays with IndusEye RS3 radar units immune to detergent foam, high-pressure steam, and water spray.",
+      image: "/assets/products/product-enclosed.png",
+      technologies: ["24 GHz FMCW Radar", "Optical Sensor Fusion", "IndusEye RS3", "Industrial Relays"],
+      results: [
+        "99.98% vehicle detection accuracy under heavy foam",
+        "Zero optical wash-tunnel false stops",
+        "$180,000 estimated annual downtime savings"
+      ],
+      link: "/products/sensing-unit",
+      cta: "Inspect IndusEye RS3"
     },
     {
-      title: "MedFlow Mobile",
-      category: "App Development",
-      description: "Healthcare management app serving 2M+ patients with real-time vitals monitoring and AI diagnostics.",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop",
-      technologies: ["React Native", "Node.js", "MongoDB", "ML Kit"],
-      results: ["2M+ active users", "50% faster diagnoses", "FDA approved"],
-      link: "#"
-    },
-    {
-      title: "EcoLogistics Platform",
-      category: "Web Development",
-      description: "Supply chain optimization platform reducing carbon emissions by 60% for Fortune 500 companies.",
+      title: "Tier-1 Logistics Hub: Autonomous FMCW Radar Dock Access",
+      category: "Logistics & Access Automation",
+      badgeIcon: ShieldCheck,
+      description: "Autonomous truck identification and gantry gate actuation system deployed across 18 high-duty distribution dock bays with 1000 lb holding force interlocks.",
       image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Docker"],
-      results: ["60% emission reduction", "30% cost savings", "500+ companies"],
-      link: "#"
+      technologies: ["IndusEye RS3", "Cat-Eye HD Camera", "1000 lb Coupling", "RS-485 Modbus"],
+      results: [
+        "4.2 minute reduction in dock entry turnaround",
+        "100% steam, rain, and fog penetration",
+        "$220,000 annualized throughput gain"
+      ],
+      link: "/products/sensing-unit",
+      cta: "Explore Fleet Specs"
     },
     {
-      title: "Neural Voice Assistant",
-      category: "AI Solutions",
-      description: "Advanced conversational AI for customer service, handling 1M+ queries daily with 95% satisfaction.",
-      image: "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=600&h=400&fit=crop",
-      technologies: ["GPT-4", "Speech Recognition", "FastAPI", "Redis"],
-      results: ["1M+ queries/day", "95% satisfaction", "70% cost reduction"],
-      link: "#"
+      title: "Fortune 500 Manufacturing: Enterprise AI Training Cohort",
+      category: "Enterprise AI Training",
+      badgeIcon: Cpu,
+      description: "Intensive 8-week corporate training cohort upskilling 45 senior industrial engineers in edge ML, predictive maintenance telemetry pipelines, and sovereign LLM deployment.",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop",
+      technologies: ["Edge ML", "Python / PyTorch", "Sensor Fusion", "LLM Governance"],
+      results: [
+        "45 senior engineers certified in edge AI",
+        "4 internal autonomous pilots successfully deployed",
+        "Zero long-term reliance on third-party agencies"
+      ],
+      link: "/contact",
+      cta: "Schedule Cohort Briefing"
     },
     {
-      title: "RetailVision AR",
-      category: "App Development",
-      description: "Augmented reality shopping experience increasing conversion rates by 180% for major retailers.",
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop",
-      technologies: ["ARKit", "Swift", "Unity", "Cloud Anchors"],
-      results: ["180% conversion boost", "40% return reduction", "5M+ downloads"],
-      link: "#"
-    },
-    {
-      title: "SmartCity Dashboard",
-      category: "Web Development",
-      description: "Real-time city management platform processing 10TB+ of IoT data daily for urban optimization.",
+      title: "Commercial Fleet Depot: Sub-Zero Perimeter Radar Gate",
+      category: "High-Duty Access Hardware",
+      badgeIcon: Radio,
+      description: "24 GHz FMCW radar sensing unit installed at commercial fleet perimeter gates, replacing saw-cut pavement magnetic ground loops that failed during winter freeze-thaw cycles.",
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop",
-      technologies: ["Vue.js", "D3.js", "Apache Kafka", "Kubernetes"],
-      results: ["10TB+ data/day", "25% efficiency gain", "Smart city certified"],
-      link: "#"
+      technologies: ["24 GHz FMCW", "Sub-Zero Rated Enclosure", "IndusEye RS3", "Dry Contact I/O"],
+      results: [
+        "Zero cold-weather misfires down to -35°C",
+        "Zero saw-cut pavement loop failures",
+        "$65,000 saved in civil asphalt cutting costs"
+      ],
+      link: "/products/sensing-unit",
+      cta: "View Hardware Specs"
+    },
+    {
+      title: "National Infrastructure: Corporate AI Governance & Workforces",
+      category: "Enterprise AI Training",
+      badgeIcon: Award,
+      description: "Customized technical enablement and executive AI strategy intensive covering secure autonomous data architectures, risk containment, and sovereign LLM pipelines.",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=400&fit=crop",
+      technologies: ["Sovereign LLMs", "Multi-Agent Architectures", "SOC2/ISO Compliance", "RAG Systems"],
+      results: [
+        "$420,000 verified operational cost reduction",
+        "Air-gapped security and compliance verified",
+        "Comprehensive workforce capability playbooks"
+      ],
+      link: "/contact",
+      cta: "Request Curriculum"
+    },
+    {
+      title: "Industrial Facility: Overhead Crane Anti-Collision Radar",
+      category: "Industrial Sensing Hardware",
+      badgeIcon: ShieldCheck,
+      description: "Fail-safe millimeter-wave radar proximity sensing preventing heavy overhead gantry collisions in dense airborne dust and steam environments.",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop",
+      technologies: ["IndusEye RS3 Core", "FMCW Distance Profiling", "Fail-Safe Relays", "IP67 Enclosure"],
+      results: [
+        "Zero collisions across 24 consecutive months",
+        "12 ms real-time relay cut-off response",
+        "100% dust and atmospheric obscuration immunity"
+      ],
+      link: "/products/sensing-unit",
+      cta: "Request On-Site Pilot"
     }
   ]
 
   const stats = [
-    { value: "200+", label: "Projects Completed" },
-    { value: "50M+", label: "Users Reached" },
-    { value: "99.9%", label: "Uptime Achieved" },
-    { value: "340%", label: "Max ROI Increase" }
+    { value: "$1.1M+", label: "Target B2B Pipeline Impact" },
+    { value: "34+", label: "Commercial Auto Spa Bays Active" },
+    { value: "99.98%", label: "Sensor Uptime & Detection" },
+    { value: "100%", label: "Foam & Steam Immunity" }
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/80">
+    <div className="min-h-screen bg-background text-foreground font-sans relative selection:bg-primary selection:text-black">
+      {/* Background Particle System */}
+      <ParticleSystem />
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-effect">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-gradient">
-              22-Automations
-            </Link>
-            <div className="hidden md:flex space-x-8 text-sm font-medium">
-              <Link href="/#services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
-              <Link href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link>
-              <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Radar Sensor
-              </Link>
-              <Link href="/portfolio" className="text-primary">Portfolio</Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="container mx-auto text-center">
-          <Badge className="animate-pulse-glow mb-8" variant="secondary">
-            ⚡ Our Success Stories
+      <section className="pt-36 pb-20 px-6 relative z-10 border-b border-border/40">
+        <div className="container mx-auto text-center max-w-4xl">
+          <Badge className="mb-6 font-mono text-xs uppercase tracking-wider bg-primary/10 text-primary border border-primary/20" variant="secondary">
+            ⚡ Proven Field Deployments &amp; Case Studies
           </Badge>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-gradient">Transforming</span> Industries
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6">
+            Autonomous Reliability in <span className="text-gradient">Mission-Critical</span> Environments
           </h1>
 
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            From Fortune 500 enterprises to innovative startups, see how we've revolutionized businesses across the globe.
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+            From high-volume commercial car-wash bays and industrial fleet loading docks to intensive Fortune 500 AI engineering cohorts, explore how 22-Automations eliminates operational downtime and scales enterprise capability.
           </p>
+
+          <div className="mt-8 flex flex-wrap gap-4 justify-center">
+            <Link href="/products/sensing-unit">
+              <Button size="lg" className="font-mono text-xs uppercase tracking-wider bg-primary text-black font-bold hover:brightness-110 shadow-[0_0_20px_rgba(0,255,255,0.3)]">
+                Request a 30-Day Evaluation Pilot <ArrowRight className="w-4 h-4 ml-1.5" />
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button size="lg" variant="outline" className="font-mono text-xs uppercase tracking-wider glass-effect border-border/80 hover:border-accent text-white">
+                Book Corporate AI Training Briefing
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {/* Operational Metrics Section */}
+      <section className="py-16 px-6 relative z-10 bg-secondary/15 border-b border-border/40">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
-              <Card key={index} className="glass-effect text-center hover:glow-effect transition-all duration-300">
+              <Card key={index} className="tech-border bg-card/40 text-center hover:border-primary/50 transition-all duration-300">
                 <CardContent className="p-6">
-                  <div className="text-4xl font-bold text-gradient mb-2">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-3xl lg:text-4xl font-extrabold font-mono text-gradient mb-2">{stat.value}</div>
+                  <div className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{stat.label}</div>
                 </CardContent>
               </Card>
             ))}
@@ -125,145 +167,123 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Grid */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-gradient">Featured Projects</span>
+      {/* Case Studies Grid */}
+      <section className="py-24 px-6 relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16 space-y-3">
+            <div className="text-xs font-mono uppercase tracking-wider text-primary">Field-Tested Impact</div>
+            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+              Enterprise Deployments &amp; Verified Results
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Cutting-edge solutions that have redefined what's possible in their respective industries.
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+              Real-world metrics from commercial installations and executive engineering programs.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <Card key={index} className="glass-effect hover:glow-effect transition-all duration-300 group overflow-hidden">
-                <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge variant="secondary" className="bg-black/50 backdrop-blur-sm">
-                      {project.category}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardHeader>
-                  <CardTitle className="text-xl text-gradient">{project.title}</CardTitle>
-                  <CardDescription className="text-sm">
-                    {project.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  {/* Technologies */}
+            {projects.map((project, index) => {
+              const Icon = project.badgeIcon
+              return (
+                <Card key={index} className="tech-border bg-card/40 hover:bg-card/70 hover:border-primary/50 transition-all duration-300 group overflow-hidden flex flex-col justify-between">
                   <div>
-                    <div className="text-sm font-semibold text-primary mb-2">Technologies:</div>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, techIndex) => (
-                        <Badge key={techIndex} variant="outline" className="text-xs">
-                          {tech}
+                    <div className="relative overflow-hidden aspect-video bg-black/50 flex items-center justify-center border-b border-border/40">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <Badge variant="secondary" className="bg-black/80 backdrop-blur-md text-[11px] font-mono border border-white/10 flex items-center gap-1.5 text-white">
+                          <Icon className="w-3 h-3 text-primary" />
+                          {project.category}
                         </Badge>
-                      ))}
+                      </div>
                     </div>
+
+                    <CardHeader className="p-6 pb-4">
+                      <CardTitle className="text-lg font-bold text-white group-hover:text-primary transition-colors leading-snug">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                        {project.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="p-6 pt-0 space-y-4">
+                      {/* Technologies */}
+                      <div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-primary/80 mb-2">Technologies Used</div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.technologies.map((tech, techIndex) => (
+                            <Badge key={techIndex} variant="outline" className="text-[10px] font-mono border-border/80 bg-background/50">
+                              {tech}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Results */}
+                      <div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-accent mb-2">Verified Results</div>
+                        <ul className="space-y-1.5">
+                          {project.results.map((result, resultIndex) => (
+                            <li key={resultIndex} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                              <span>{result}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </CardContent>
                   </div>
 
-                  {/* Results */}
-                  <div>
-                    <div className="text-sm font-semibold text-primary mb-2">Key Results:</div>
-                    <ul className="space-y-1">
-                      {project.results.map((result, resultIndex) => (
-                        <li key={resultIndex} className="text-xs text-muted-foreground flex items-center">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></div>
-                          {result}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="p-6 pt-0">
+                    <Link href={project.link}>
+                      <Button variant="outline" className="w-full font-mono text-xs uppercase tracking-wider glass-effect border-border hover:border-primary text-white hover:text-primary">
+                        {project.cta} →
+                      </Button>
+                    </Link>
                   </div>
-
-                  <Button variant="outline" className="w-full mt-4 glass-effect">
-                    View Case Study
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Preview */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto">
-          <Card className="glass-effect glow-effect max-w-4xl mx-auto">
-            <CardContent className="p-12 text-center">
-              <h3 className="text-3xl font-bold mb-6">
-                What Our <span className="text-gradient">Clients Say</span>
+      {/* Enterprise CTA Section */}
+      <section className="py-20 px-6 relative z-10 border-t border-border/40">
+        <div className="container mx-auto max-w-4xl text-center">
+          <Card className="tech-border bg-card/60 p-8 md:p-12">
+            <CardContent className="space-y-6">
+              <Badge className="font-mono text-xs uppercase tracking-wider bg-accent/15 text-accent border border-accent/30">
+                Evaluation &amp; Procurement
+              </Badge>
+              <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                Scale Your Facility Flow or Engineering Capacity
               </h3>
-              <blockquote className="text-xl text-muted-foreground mb-6 italic">
-                "22-Automations transformed our entire business model. Their AI solution increased our efficiency by 340%
-                and opened up revenue streams we never thought possible."
-              </blockquote>
-              <div className="flex items-center justify-center space-x-4">
-                <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=60&h=60&fit=crop&crop=face"
-                  alt="CEO"
-                  className="w-12 h-12 rounded-full"
-                />
-                <div className="text-left">
-                  <div className="font-semibold text-foreground">Marcus Chen</div>
-                  <div className="text-sm text-muted-foreground">CEO, InnovateTech Solutions</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-6">
-        <div className="container mx-auto text-center">
-          <Card className="glass-effect glow-effect max-w-3xl mx-auto">
-            <CardContent className="p-12">
-              <h3 className="text-4xl font-bold mb-6">
-                Ready to <span className="text-gradient">Join</span> Our Success Stories?
-              </h3>
-              <p className="text-xl text-muted-foreground mb-8">
-                Let's discuss how we can transform your business with cutting-edge technology solutions.
+              <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                Whether deploying 24 GHz FMCW radar sensing units across your commercial bays or training your engineering team in sovereign AI architectures, 22-Automations delivers mission-critical execution.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="text-lg px-8 py-6 glow-effect">
-                  Start Your Project
-                </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-                  Download Case Studies
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+                <Link href="/products/sensing-unit">
+                  <Button size="lg" className="font-mono text-xs uppercase tracking-wider bg-primary text-black font-bold hover:brightness-110">
+                    Request 30-Day On-Site Pilot
+                  </Button>
+                </Link>
+                <Link href="/contact">
+                  <Button size="lg" variant="outline" className="font-mono text-xs uppercase tracking-wider glass-effect text-white hover:border-accent">
+                    Contact Enterprise Procurement
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-border/50">
-        <div className="container mx-auto text-center">
-          <Link href="/" className="text-2xl font-bold text-gradient mb-4 inline-block">
-            22-Automations
-          </Link>
-          <p className="text-muted-foreground mb-6">
-            Crafting the digital future, one innovation at a time.
-          </p>
-          <div className="flex justify-center space-x-6 text-sm text-muted-foreground">
-            <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-          </div>
-        </div>
-      </footer>
+      {/* Centralized Global Footer */}
+      <Footer />
     </div>
   )
 }
