@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react'
 import Image from 'next/image'
+import { PilotRequestSchema } from '@/lib/validations/contact'
 import {
   Radio,
   Eye,
@@ -15,7 +16,8 @@ import {
   ExternalLink,
   ChevronDown,
   Building2,
-  Home as HomeIcon,
+  Truck,
+  Warehouse,
   Sparkles,
   ArrowRight,
   ShieldAlert,
@@ -25,16 +27,18 @@ import {
   Target
 } from 'lucide-react'
 
+export type DeploymentEnvironment = 'auto-spa' | 'fleet-bays' | 'industrial-dock'
+
 interface HardwareSensingProductProps {
   onContactClick?: () => void
-  initialMode?: 'commercial' | 'residential'
+  initialMode?: DeploymentEnvironment
 }
 
 export default function HardwareSensingProduct({
   onContactClick,
-  initialMode = 'commercial'
+  initialMode = 'auto-spa'
 }: HardwareSensingProductProps) {
-  const [deploymentMode, setDeploymentMode] = useState<'commercial' | 'residential'>(initialMode)
+  const [deploymentMode, setDeploymentMode] = useState<DeploymentEnvironment>(initialMode)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formStatus, setFormStatus] = useState<{ type: 'success' | 'info' | 'error'; message: string } | null>(null)
 
@@ -43,6 +47,7 @@ export default function HardwareSensingProduct({
 
   // Form inputs state
   const todayStr = new Date().toISOString().split('T')[0]
+  const [modalMountedAt, setModalMountedAt] = useState<number>(() => Date.now())
   const [formData, setFormData] = useState({
     requestType: '30-Day Pilot Unit',
     companyName: '',
@@ -51,19 +56,28 @@ export default function HardwareSensingProduct({
     phone: '',
     availableDate: todayStr,
     availableTime: '10:00',
-    notes: ''
+    notes: '',
+    fax_number: ''
   })
 
   const RECIPIENT_EMAIL = 'automations.22@outlook.com'
 
-  const getDeploymentLabel = (mode: 'commercial' | 'residential') => {
-    return mode === 'commercial'
-      ? 'Commercial (Car-Wash, Fleet Bays & Industrial Entrances and Dock)'
-      : 'Residential (Smart Gates, Entry Doors & Garages)'
+  const getDeploymentLabel = (mode: DeploymentEnvironment) => {
+    switch (mode) {
+      case 'auto-spa':
+        return 'Car Wash & Auto Spa Tunnels (Foam, Mist & Steam Proof)'
+      case 'fleet-bays':
+        return 'Transit & Commercial Fleet Maintenance Bays (High-Cycle Duty)'
+      case 'industrial-dock':
+        return 'High-Duty Industrial Entrances, Docks & Roll-Up Doors'
+      default:
+        return 'Car Wash & Industrial High-Duty Access'
+    }
   }
 
   const openModal = (defaultType = '30-Day Pilot Unit') => {
     setFormStatus(null)
+    setModalMountedAt(Date.now())
     setFormData(prev => ({ ...prev, requestType: defaultType }))
     if (modalRef.current) {
       if (typeof modalRef.current.showModal === 'function') {
@@ -108,6 +122,52 @@ export default function HardwareSensingProduct({
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus(null)
+
+    // Anti-bot honeypot check: reject if filled
+    if (formData.fax_number && formData.fax_number.trim().length > 0) {
+      setFormStatus({
+        type: 'error',
+        message: 'Bot detected: submission rejected.'
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    // Anti-tamper dwell time check (>= 1500ms)
+    const elapsed = Date.now() - modalMountedAt
+    if (elapsed < 1500) {
+      setFormStatus({
+        type: 'error',
+        message: 'Submission completed too quickly. Automated submission rejected.'
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate using PilotRequestSchema
+    const validation = PilotRequestSchema.safeParse({
+      userName: formData.userName,
+      companyName: formData.companyName,
+      email: formData.email,
+      phone: formData.phone,
+      requestType: formData.requestType,
+      deploymentEnvironment: deploymentMode,
+      availableDate: formData.availableDate,
+      availableTime: formData.availableTime,
+      notes: formData.notes,
+      fax_number: formData.fax_number,
+      form_timestamp: modalMountedAt
+    })
+
+    if (!validation.success) {
+      const issue = validation.error.issues[0]
+      setFormStatus({
+        type: 'error',
+        message: issue?.message || 'Please check your inputs and try again.'
+      })
+      setIsSubmitting(false)
+      return
+    }
 
     const useLabel = getDeploymentLabel(deploymentMode)
     const mailtoSubject = encodeURIComponent(`IndusEye RS3 [${formData.requestType}] - ${formData.companyName}`)
@@ -168,7 +228,8 @@ export default function HardwareSensingProduct({
           phone: '',
           availableDate: todayStr,
           availableTime: '10:00',
-          notes: ''
+          notes: '',
+          fax_number: ''
         })
       } else {
         window.location.href = mailtoUrl
@@ -230,19 +291,28 @@ export default function HardwareSensingProduct({
                 </div>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary">
-                    {deploymentMode === 'commercial' ? <Building2 className="w-4 h-4" /> : <HomeIcon className="w-4 h-4" />}
+                    {deploymentMode === 'auto-spa' ? (
+                      <Building2 className="w-4 h-4" />
+                    ) : deploymentMode === 'fleet-bays' ? (
+                      <Truck className="w-4 h-4" />
+                    ) : (
+                      <Warehouse className="w-4 h-4" />
+                    )}
                   </div>
                   <select
                     id="deployment-mode"
                     value={deploymentMode}
-                    onChange={(e) => setDeploymentMode(e.target.value as 'commercial' | 'residential')}
+                    onChange={(e) => setDeploymentMode(e.target.value as DeploymentEnvironment)}
                     className="w-full pl-10 pr-10 py-3 rounded-lg bg-secondary/80 border border-border text-foreground font-semibold text-xs sm:text-sm appearance-none cursor-pointer focus:outline-none focus:border-primary transition-colors leading-tight"
                   >
-                    <option value="commercial">
-                      Commercial (Car-Wash, Fleet Bays &amp; Industrial Entrances and Dock)
+                    <option value="auto-spa">
+                      Car Wash &amp; Auto Spa Tunnels (Foam, Mist &amp; Steam Proof)
                     </option>
-                    <option value="residential">
-                      Residential (Smart Gates, Entry Doors &amp; Garages)
+                    <option value="fleet-bays">
+                      Transit &amp; Fleet Maintenance Bays (Heavy Ingress/Egress)
+                    </option>
+                    <option value="industrial-dock">
+                      High-Duty Industrial Entrances &amp; Loading Docks
                     </option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -295,9 +365,11 @@ export default function HardwareSensingProduct({
                     IndusEye RS3 Sensor Unit
                   </div>
                   <div className="font-mono text-[11px] text-muted-foreground">
-                    {deploymentMode === 'commercial'
-                      ? 'Commercial Bay & Dock Configuration'
-                      : 'Residential Smart Access Configuration'}
+                    {deploymentMode === 'auto-spa'
+                      ? 'Auto Spa Tunnel Configuration'
+                      : deploymentMode === 'fleet-bays'
+                      ? 'Fleet Transit Bay Configuration'
+                      : 'Industrial Dock & Door Configuration'}
                   </div>
                 </div>
               </div>
@@ -654,8 +726,9 @@ export default function HardwareSensingProduct({
                 className="w-full px-3 py-2.5 rounded-lg bg-secondary/80 border border-border text-foreground text-sm font-semibold focus:outline-none focus:border-primary"
               >
                 <option value="30-Day Pilot Unit">30-Day On-Site Pilot / Trial Unit</option>
+                <option value="Multi-Bay Rollout">Multi-Bay Facility Rollout (5-20 Bays)</option>
                 <option value="Technical Consultation">Schedule Technical Consultation</option>
-                <option value="OEM Volume Pricing">Request OEM &amp; Distributor Pricing</option>
+                <option value="OEM Volume Pricing">Request OEM &amp; Distributor Pricing RFQ</option>
                 <option value="Datasheet Download">Datasheet &amp; Pinout Package</option>
               </select>
             </div>
@@ -667,16 +740,37 @@ export default function HardwareSensingProduct({
               <select
                 id="modal-deployment"
                 value={deploymentMode}
-                onChange={(e) => setDeploymentMode(e.target.value as 'commercial' | 'residential')}
+                onChange={(e) => setDeploymentMode(e.target.value as DeploymentEnvironment)}
                 className="w-full px-3 py-2.5 rounded-lg bg-secondary/80 border border-border text-foreground text-sm font-semibold focus:outline-none focus:border-primary"
               >
-                <option value="commercial">
-                  Commercial (Car-Wash, Fleet Bays &amp; Industrial Entrances and Dock)
+                <option value="auto-spa">
+                  Car Wash &amp; Auto Spa Tunnels (Foam, Mist &amp; Steam Proof)
                 </option>
-                <option value="residential">
-                  Residential (Smart Gates, Entry Doors &amp; Garages)
+                <option value="fleet-bays">
+                  Transit &amp; Fleet Maintenance Bays (Heavy Ingress/Egress)
+                </option>
+                <option value="industrial-dock">
+                  High-Duty Industrial Entrances &amp; Loading Docks
                 </option>
               </select>
+            </div>
+
+            {/* Anti-bot Honeypot Trap Field */}
+            <div
+              style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              <label htmlFor="fax_number">Do not fill this field</label>
+              <input
+                id="fax_number"
+                name="fax_number"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.fax_number}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

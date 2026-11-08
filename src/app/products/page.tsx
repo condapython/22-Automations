@@ -2,66 +2,39 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import HardwareSensingProduct from '@/components/products/HardwareSensingProduct'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 
 export const metadata = {
-  title: "Products & Hardware Solutions | 22-Automations",
-  description: "Explore 22-Automations products: IndusEye RS3 radar sensing hardware for auto spas and high-duty access, AI-GEO spatial models, POS CRM platforms, and IoT cloud workflows."
+  title: "Flagship Products & Offerings | 22-Automations",
+  description: "Explore 22-Automations flagship offerings: IndusEye RS3 24 GHz FMCW radar sensing hardware for auto spas, car washes, and fleet bays, and Enterprise AI Training programs."
 }
 
 export default function Products() {
   const products = [
     {
       title: "IndusEye RS3",
-      category: "Auto Spa & Access Hardware",
-      description: "Millimeter-wave 24 GHz radar sensing unit with integrated cat-eye HD camera, ambient light sensor, and 1000 lb holding force rating for auto spas, fleet bays, and high-duty access.",
+      category: "Industrial Radar & Access Hardware",
+      description: "Millimeter-wave 24 GHz FMCW radar sensing and access unit with integrated cat-eye HD optical tracking, ambient light sensing, and 1000 lb holding force rating for auto spas, fleet bays, and high-duty industrial entrances.",
       image: "/assets/products/product-enclosed.png",
-      features: ["24 GHz FMCW Radar", "HD Cat-Eye Optical Camera", "Light-Sensor Automation", "1000 lb Holding Force"],
-      benefits: ["Steam & spray immune", "Zero false triggers", "Recycled polymer housing"],
-      price: "Request Pilot Unit",
+      features: ["24 GHz FMCW Radar", "HD Cat-Eye Optical Camera", "Light-Sensor Relay Logic", "1000 lb Holding Force Rating"],
+      benefits: ["Steam & detergent foam immune", "Zero optical false triggers", "Toolless 5-minute field swap"],
+      price: "Evaluation Pilot / Volume RFQ",
       link: "/products/sensing-unit",
       isHardware: true
     },
     {
-      title: "AI-GEO Optimizations",
-      category: "Geo-Spatial AI",
-      description: "Optimize geographical resource planning, field routes, and spatial analytics with advanced machine learning models.",
-      image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=400&fit=crop",
-      features: ["Route Optimization", "Demographics Analysis", "Spatial Trend Forecasting", "Custom Map Overlays"],
-      benefits: ["30% reduction in fuel/time", "Data-driven site selection", "Interactive dashboards"],
-      price: "Custom Pricing",
-      link: "/contact"
-    },
-    {
-      title: "POS CRM Softwares",
-      category: "Business Operations",
-      description: "Fully integrated Point of Sale and Customer Relationship Management systems to unify checkout and customer loyalty.",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
-      features: ["Inventory Tracking", "Loyalty Programs", "Sales & Tax Reports", "Multi-store Syncing"],
-      benefits: ["Seamless transactions", "Increased customer retention", "Automated stock alerts"],
-      price: "From $149/month",
-      link: "/contact"
-    },
-    {
-      title: "IOT and AI Workflows and Solutions",
-      category: "Smart Systems",
-      description: "Automate sensor event triggers and orchestrate complex workflows by combining physical IoT hardware with cloud-based AI engines.",
-      image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=400&fit=crop",
-      features: ["Edge Sensor Listeners", "AI Predictive Alerts", "Automated Actions Trigger", "OTA Device Fleet Console"],
-      benefits: ["Real-time smart monitoring", "Preventative maintenance alerts", "End-to-end encryption"],
-      price: "From $399/month",
-      link: "/contact"
-    },
-    {
-      title: "Email and SMS Marketing",
-      category: "Marketing Automation",
-      description: "Supercharge your audience outreach and conversions with an automated message scheduler, templates, and analytics tracker.",
-      image: "https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=600&h=400&fit=crop",
-      features: ["Drip Campaign Designer", "High-Deliverability Routing", "Audience Segmentation", "A/B Testing Engine"],
-      benefits: ["Maximized email delivery", "Personalized SMS triggers", "Real-time CTR analytics"],
-      price: "From $99/month",
-      link: "/contact"
+      title: "Enterprise AI Training",
+      category: "Corporate Technical Enablement",
+      description: "Intensive, customized enterprise AI training programs for corporate engineering departments and operations leadership. Covering edge AI sensor fusion, enterprise LLMs, predictive maintenance telemetry, and AI governance.",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=400&fit=crop",
+      features: ["Edge AI & FMCW Sensor Fusion", "Enterprise LLMs & Agent Architectures", "Predictive Maintenance Telemetry", "AI Governance & Security Controls"],
+      benefits: ["Internalize AI capabilities without agency lock-in", "Immediate engineering productivity gains", "Executive ROI & risk containment frameworks"],
+      price: "Corporate Cohorts & Intensives",
+      link: "/contact",
+      isHardware: false
     }
   ]
 
@@ -75,31 +48,7 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-effect border-b border-border/40">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-gradient">
-              22-Automations
-            </Link>
-            <div className="hidden md:flex space-x-8 text-sm font-medium">
-              <Link href="/#services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
-              <Link href="/products" className="text-primary">Products</Link>
-              <Link href="/products/sensing-unit" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                IndusEye RS3
-              </Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
-            </div>
-            <Link
-              href="/contact"
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-xs tracking-wider uppercase hover:brightness-110 transition-all glow-effect"
-            >
-              Consult an Engineer
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Featured Flagship Product Section: IndusEye RS3 */}
       <div className="pt-24 border-b border-border/40">
@@ -126,16 +75,16 @@ export default function Products() {
       <section className="py-20 px-6" id="catalog">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16 space-y-3">
-            <div className="text-xs font-mono uppercase tracking-wider text-primary">Comprehensive Catalog</div>
+            <div className="text-xs font-mono uppercase tracking-wider text-primary">Flagship B2B Offerings</div>
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-              Industrial Hardware &amp; Software Solutions
+              Industrial Hardware &amp; Enterprise AI Training
             </h2>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Engineered systems built to eliminate bottlenecks, automate sensing triggers, and deliver measurable operational ROI.
+              Engineered systems and workforce enablement built to eliminate operational bottlenecks, automate physical access, and scale performance.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div id="ai-training" className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {products.map((product, index) => (
               <Card key={index} className="tech-border bg-card/40 hover:bg-card/70 hover:border-primary/50 transition-all duration-300 group overflow-hidden flex flex-col justify-between">
                 <div>
@@ -205,7 +154,7 @@ export default function Products() {
                     {product.link ? (
                       <Link href={product.link} className="flex-1">
                         <Button variant="default" size="sm" className="w-full text-xs font-bold gap-1">
-                          {product.isHardware ? 'IndusEye RS3 Deep Dive' : 'Learn More'} <ArrowRight className="w-3.5 h-3.5" />
+                          {product.isHardware ? 'IndusEye RS3 Deep Dive' : 'Explore Cohorts'} <ArrowRight className="w-3.5 h-3.5" />
                         </Button>
                       </Link>
                     ) : (
@@ -281,26 +230,8 @@ export default function Products() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-border/40 bg-card/40">
-        <div className="container mx-auto text-center space-y-4">
-          <Link href="/" className="text-2xl font-bold text-gradient inline-block">
-            22-Automations
-          </Link>
-          <p className="text-xs font-mono text-muted-foreground max-w-md mx-auto">
-            Industrial Automation, Embedded Radar Hardware &amp; AI-Powered Operations.
-          </p>
-          <div className="flex justify-center space-x-6 text-xs text-muted-foreground">
-            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <Link href="/products/sensing-unit" className="hover:text-primary transition-colors">IndusEye RS3</Link>
-            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-          </div>
-          <div className="text-[11px] font-mono text-muted-foreground/60">
-            © 22-Automations. All rights reserved. Brampton &amp; Greater Toronto Area, ON.
-          </div>
-        </div>
-      </footer>
+      {/* Global Footer */}
+      <Footer />
     </div>
   )
 }

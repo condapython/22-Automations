@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
+import { ContactFormSchema } from '@/lib/validations/contact'
 
 interface FormData {
   name: string
@@ -17,6 +18,7 @@ interface FormData {
   budget: string
   project: string
   message: string
+  company_website_url: string
 }
 
 interface FormErrors {
@@ -30,8 +32,10 @@ export default function Contact() {
     company: '',
     budget: '',
     project: '',
-    message: ''
+    message: '',
+    company_website_url: ''
   })
+  const [formMountedAt] = useState<number>(() => Date.now())
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -64,27 +68,99 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setErrors({})
 
-    // Validate all fields
-    const newErrors: FormErrors = {}
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'budget' && key !== 'project') { // These are optional
-        const error = validateField(key, value)
-        if (error) newErrors[key] = error
-      }
+    // Anti-bot honeypot check: reject instantly if filled
+    if (formData.company_website_url && formData.company_website_url.trim().length > 0) {
+      setErrors({ company_website_url: 'Bot detected: honeypot field must be empty' })
+      setIsSubmitting(false)
+      return
+    }
+
+    // Anti-tamper dwell time check (>= 1500ms)
+    const elapsed = Date.now() - formMountedAt
+    if (elapsed < 1500) {
+      setErrors({ form: 'Submission completed too fast. Automated submission rejected.' })
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate using ContactFormSchema
+    const validation = ContactFormSchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      company: formData.company,
+      budget: formData.budget,
+      project: formData.project,
+      offering: formData.project,
+      message: formData.message,
+      company_website_url: formData.company_website_url,
+      form_timestamp: formMountedAt
     })
 
-    if (Object.keys(newErrors).length > 0) {
+    if (!validation.success) {
+      const newErrors: FormErrors = {}
+      for (const issue of validation.error.issues) {
+        const field = issue.path[0]?.toString() || 'form'
+        if (!newErrors[field]) {
+          newErrors[field] = issue.message
+        }
+      }
       setErrors(newErrors)
       setIsSubmitting(false)
       return
     }
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    const RECIPIENT_EMAIL = 'automations.22@outlook.com'
+    const mailtoSubject = encodeURIComponent(`Enterprise Contact Inquiry: ${formData.project || 'General'} (${formData.company})`)
+    const mailtoBody = encodeURIComponent(
+      `Enterprise Contact Inquiry:\n` +
+      `----------------------------------------\n` +
+      `Name        : ${formData.name}\n` +
+      `Company     : ${formData.company}\n` +
+      `Email       : ${formData.email}\n` +
+      `Budget      : ${formData.budget || 'Not specified'}\n` +
+      `Project     : ${formData.project || 'Not specified'}\n` +
+      `Message     :\n${formData.message}\n`
+    )
+    const mailtoUrl = `mailto:${RECIPIENT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    const payload = {
+      _subject: `New Enterprise Inquiry: ${formData.project || 'General'} (${formData.company})`,
+      _template: 'table',
+      _captcha: 'false',
+      Name: formData.name,
+      Company: formData.company,
+      Email: formData.email,
+      Budget: formData.budget,
+      Project: formData.project,
+      Message: formData.message
+    }
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${RECIPIENT_EMAIL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+
+      const data = await response.json()
+      setIsSubmitting(false)
+
+      if (data && (data.success === 'true' || data.success === true)) {
+        setIsSubmitted(true)
+      } else {
+        window.location.href = mailtoUrl
+        setIsSubmitted(true)
+      }
+    } catch {
+      setIsSubmitting(false)
+      window.location.href = mailtoUrl
+      setIsSubmitted(true)
+    }
   }
 
   const contactInfo = [
@@ -309,12 +385,29 @@ export default function Contact() {
                           className="glass-effect flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
                         >
                           <option value="">Select budget range</option>
-                          <option value="10k-25k">$10k - $25k</option>
                           <option value="25k-50k">$25k - $50k</option>
                           <option value="50k-100k">$50k - $100k</option>
-                          <option value="100k+">$100k+</option>
+                          <option value="100k-250k+">$100k - $250k+</option>
                         </select>
                       </div>
+                    </div>
+
+                    {/* Anti-bot Honeypot Trap Field */}
+                    <div
+                      style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+                      aria-hidden="true"
+                      tabIndex={-1}
+                    >
+                      <label htmlFor="company_website_url">Do not fill this field</label>
+                      <input
+                        id="company_website_url"
+                        name="company_website_url"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={formData.company_website_url}
+                        onChange={(e) => handleInputChange('company_website_url', e.target.value)}
+                      />
                     </div>
 
                     <div className="space-y-2">
@@ -326,11 +419,11 @@ export default function Contact() {
                         className="glass-effect flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
                       >
                         <option value="">Select project type</option>
-                        <option value="app">Mobile App Development</option>
-                        <option value="web">Web Development</option>
-                        <option value="ai">AI Solutions & Workflows</option>
-                        <option value="consulting">Technology Consulting</option>
-                        <option value="other">Other</option>
+                        <option value="induseye-pilot">IndusEye RS3 — 30-Day Evaluation Pilot</option>
+                        <option value="induseye-rollout">IndusEye RS3 — Multi-Bay / Fleet Rollout RFQ</option>
+                        <option value="ai-training-cohort">Enterprise AI Training — Engineering Cohort</option>
+                        <option value="ai-training-executive">Enterprise AI Training — Executive Strategy Intensive</option>
+                        <option value="custom-hardware">Custom Industrial IoT & Embedded Automation</option>
                       </select>
                     </div>
 
@@ -356,6 +449,10 @@ export default function Contact() {
                         )}
                       </AnimatePresence>
                     </div>
+
+                    {errors.form && (
+                      <p className="text-xs text-red-400 font-mono">{errors.form}</p>
+                    )}
 
                     <Button
                       type="submit"
@@ -451,7 +548,7 @@ export default function Contact() {
             22-Automations
           </Link>
           <p className="text-muted-foreground mb-6">
-            Automating success, one workflow at a time.
+            Automating success, one system at a time.
           </p>
           <div className="flex justify-center space-x-6 text-sm text-muted-foreground mb-4">
             <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>

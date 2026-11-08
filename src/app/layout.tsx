@@ -3,7 +3,6 @@ import { Oxanium, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import Script from "next/script";
-import geoAssets from "./geo-assets.json"; // Import the GEO assets
 
 const oxanium = Oxanium({
   variable: "--font-oxanium",
@@ -20,8 +19,23 @@ const sourceCodePro = Source_Code_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "22-Automations | Automation, Robotics & AI Systems in GTA",
-  description: "Precision sensing, industrial automation, and custom AI workflows with 22-Automations. Expert IoT engineering, radar hardware, and mobile platforms.",
+  title: "22-Automations | IndusEye RS3 Radar & Enterprise AI Training",
+  description: "Flagship IndusEye RS3 24 GHz millimeter-wave radar access hardware and corporate Enterprise AI Training by 22-Automations. Engineered in Ontario for commercial auto spas, fleet bays, and high-duty entrances.",
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "22-Automations",
+  "url": "https://22automations.com",
+  "description": "Precision 24 GHz FMCW millimeter-wave radar access hardware (IndusEye RS3) and corporate Enterprise AI Training.",
+  "knowsAbout": [
+    "IndusEye RS3 24 GHz FMCW Radar",
+    "Enterprise AI Training",
+    "Edge AI & Sensor Fusion",
+    "Auto Spa & Car Wash Access Automation",
+    "Industrial Entrance Sensing"
+  ]
 };
 
 export default function RootLayout({
@@ -32,19 +46,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${oxanium.variable} ${sourceCodePro.variable} font-sans`}>
       <head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://images.unsplash.com https://source.unsplash.com https://ext.same-assets.com https://ugc.same-assets.com https://api.dicebear.com; media-src 'self' https://cdn.pixabay.com https://sample-videos.com; connect-src 'self' https://formsubmit.co https://unpkg.com https://*.preview.same-app.com https://*.same-app.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co mailto:;"
+        />
         <Script
           crossOrigin="anonymous"
           src="//unpkg.com/same-runtime/dist/index.global.js"
         />
-        {/* Dynamic GEO Schema Injection */}
-        {geoAssets && geoAssets.json_ld_schema && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(geoAssets.json_ld_schema),
-            }}
-          />
-        )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
       </head>
       <body suppressHydrationWarning className="antialiased bg-background text-foreground">
         <ClientBody>{children}</ClientBody>

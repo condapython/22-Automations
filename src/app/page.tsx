@@ -4,14 +4,15 @@ import { Badge } from '@/components/ui/badge'
 import ParticleSystem from '@/components/ParticleSystem'
 import TestimonialsCarousel from '@/components/TestimonialsCarousel'
 import HeroVideoBackground from '@/components/HeroVideoBackground'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import Link from 'next/link'
 import Image from 'next/image'
-import geoAssets from "./geo-assets.json"
-import { ArrowRight, Radio, Eye, Sun, ShieldCheck, Sparkles, Cpu, Layers, ExternalLink, Zap, Building2, Sliders, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, Radio, Eye, Sun, ShieldCheck, Sparkles, Cpu, Layers, ExternalLink, Zap, Building2, Sliders, CheckCircle2, GraduationCap, Award, Check } from 'lucide-react'
 
 export const metadata = {
-  title: "22-Automations | Industrial IoT, Radar Sensors & AI Systems GTA",
-  description: "Precise Identification, Autonomous Flow. Engineered for Auto Spa's & High-Duty Access. Industrial 24 GHz radar hardware, edge electronics, and custom AI workflows."
+  title: "22-Automations | IndusEye RS3 Radar & Enterprise AI Training",
+  description: "Precise Identification, Autonomous Flow. Engineered for Auto Spas, Fleet Bays & High-Duty Access. Industrial 24 GHz FMCW radar hardware and Enterprise AI Training."
 }
 
 export default function Home() {
@@ -29,8 +30,8 @@ export default function Home() {
             FMCW RADAR: 24.125 GHz CALIBRATED
           </span>
           <span className="hidden md:inline text-border">|</span>
-          <span className="hidden md:inline text-white/80">
-            ONTARIO PRODUCTION: GTA ASSEMBLY
+          <span className="hidden md:inline text-accent">
+            ENTERPRISE AI TRAINING: CORPORATE COHORTS OPEN
           </span>
         </div>
         <div className="flex items-center gap-4">
@@ -45,31 +46,7 @@ export default function Home() {
       <ParticleSystem />
 
       {/* Navigation */}
-      <nav className="sticky top-0 w-full z-50 glass-effect border-b border-border/40">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <span className="w-3 h-3 bg-primary rounded-sm shadow-[0_0_10px_rgba(0,255,255,0.8)]" />
-              <span className="text-gradient">22-Automations</span>
-            </Link>
-            <div className="hidden md:flex space-x-8 text-sm font-medium">
-              <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">Services</a>
-              <Link href="/products" className="text-muted-foreground hover:text-primary transition-colors">Products</Link>
-              <Link href="/products/sensing-unit" className="text-primary hover:text-primary transition-colors flex items-center gap-1.5 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                IndusEye RS3
-              </Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link>
-            </div>
-            <Link href="/products/sensing-unit">
-              <Button className="glow-effect font-mono text-xs uppercase tracking-wider bg-primary text-black hover:brightness-110 font-bold px-4 py-2">
-                [ Request Pilot Unit ↗ ]
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="pt-24 pb-20 px-6 relative overflow-hidden min-h-[90vh] flex items-center">
@@ -99,25 +76,18 @@ export default function Home() {
               </div>
 
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold hero-text-shadow tracking-tight leading-[1.05]">
-                <span className="block text-gradient drop-shadow-lg">Connect Every Machine.</span>
-                <span className="block text-white drop-shadow-lg">Automate Every Access.</span>
+                <span className="block text-gradient drop-shadow-lg">Industrial Radar Sensing.</span>
+                <span className="block text-white drop-shadow-lg">Enterprise AI Training.</span>
               </h1>
 
               <div className="space-y-2">
                 <p className="text-lg md:text-xl font-semibold text-white/90">
-                  Engineered for Auto Spa's &amp; High-Duty Industrial Access.
+                  Engineered for Auto Spas, Fleet Bays, High-Duty Entrances, and Enterprise Engineering Workforces.
                 </p>
                 <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed backdrop-blur-sm bg-background/30 rounded-xl p-4 border border-white/10 font-sans">
-                  From proprietary 24 GHz millimeter-wave sensing enclosures that ignore soap foam and steam to turn-key AI workflows, 22 Automations bridges physical facilities with autonomous digital control.
+                  From proprietary 24 GHz millimeter-wave sensing enclosures that ignore soap foam and steam to intensive Enterprise AI Training cohorts, 22-Automations bridges physical facilities and technical teams with mission-critical intelligence.
                 </p>
               </div>
-
-              {/* GEO Answer-First Summary */}
-              {geoAssets && geoAssets.answer_first_summary && (
-                <p className="text-xs font-mono text-muted-foreground max-w-2xl mx-auto leading-relaxed border-l-4 border-primary pl-4 py-2 italic bg-primary/5 rounded-r-lg text-left">
-                  {geoAssets.answer_first_summary}
-                </p>
-              )}
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
@@ -126,11 +96,11 @@ export default function Home() {
                     Request a 30-Day Pilot Unit <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Link href="/products">
-                  <Button size="lg" variant="outline" className="text-sm font-mono uppercase tracking-wider px-8 py-6 glass-effect backdrop-blur-md border-border/80 hover:border-primary/50 text-white font-medium">
-                    Explore Product Catalog
+                <a href="#ai-training">
+                  <Button size="lg" variant="outline" className="text-sm font-mono uppercase tracking-wider px-8 py-6 glass-effect backdrop-blur-md border-border/80 hover:border-accent text-white font-medium gap-2">
+                    <GraduationCap className="w-4 h-4 text-accent" /> Explore AI Training
                   </Button>
-                </Link>
+                </a>
               </div>
 
               {/* Quick Spec Bar Ticker */}
@@ -179,17 +149,21 @@ export default function Home() {
                   IndusEye RS3 integrates millimeter-wave radar detection with a cat-eye optical sensor and ambient light relay to trigger car-wash cycles and high-speed rolling doors with 100% reliability.
                 </p>
 
-                {/* Dual Deployment Config Pill */}
+                {/* Enterprise Deployment Configurations */}
                 <div className="p-4 rounded-xl tech-border bg-secondary/50 space-y-2">
-                  <div className="text-xs font-mono text-muted-foreground uppercase">Supported Configurations:</div>
-                  <div className="grid sm:grid-cols-2 gap-2 text-xs">
+                  <div className="text-xs font-mono text-muted-foreground uppercase">Target High-Duty Deployments:</div>
+                  <div className="grid sm:grid-cols-3 gap-2 text-xs">
                     <div className="flex items-start gap-2 text-white">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                      <span><strong>Commercial:</strong> Car-Wash, Fleet Bays &amp; Industrial Entrances/Docks</span>
+                      <span><strong>Auto Spa &amp; Car Wash Tunnels:</strong> Foam, steam &amp; spray proof</span>
                     </div>
                     <div className="flex items-start gap-2 text-white">
                       <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-1.5" />
-                      <span><strong>Residential:</strong> Smart Gates, Entry Doors &amp; Garages</span>
+                      <span><strong>Transit &amp; Fleet Bays:</strong> High-cycle ingress &amp; egress</span>
+                    </div>
+                    <div className="flex items-start gap-2 text-white">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 mt-1.5" />
+                      <span><strong>Industrial Docks:</strong> Sunlight &amp; vibration immune</span>
                     </div>
                   </div>
                 </div>
@@ -222,6 +196,129 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enterprise AI Training Flagship Showcase Section */}
+      <section id="ai-training" className="py-20 px-6 bg-secondary/20 border-b border-border/40">
+        <div className="container mx-auto max-w-6xl space-y-12">
+          <div className="text-center space-y-4 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono font-semibold tracking-wider uppercase">
+              <GraduationCap className="w-4 h-4 text-accent" />
+              Corporate Technical Enablement
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+              Enterprise <span className="text-gradient">AI Training</span> Cohorts
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              Upskill corporate engineering departments and automation leadership to internalize mission-critical AI. From edge sensor signal processing to enterprise agent systems, our curriculum eliminates agency dependencies and drives immediate ROI.
+            </p>
+          </div>
+
+          {/* 4-Module Curriculum Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="tech-border bg-card/60 hover:bg-card/90 hover:border-accent/50 transition-all duration-300">
+              <CardHeader className="p-6">
+                <div className="text-xs font-mono text-accent font-bold uppercase tracking-wider mb-2">
+                  Module 01
+                </div>
+                <CardTitle className="text-lg text-white">Edge AI &amp; Sensor Fusion</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground leading-relaxed pt-1">
+                  Radar FMCW Doppler spectral analysis, optical flow verification, and sub-15ms edge inference.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <ul className="space-y-1.5 text-xs text-muted-foreground font-mono">
+                  <li>• FMCW Radar Signal DSP</li>
+                  <li>• ESP32-S3 / ARM Deployment</li>
+                  <li>• Noise &amp; Clutter Rejection</li>
+                  <li>• Hardware-in-the-Loop Labs</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/60 hover:bg-card/90 hover:border-accent/50 transition-all duration-300">
+              <CardHeader className="p-6">
+                <div className="text-xs font-mono text-accent font-bold uppercase tracking-wider mb-2">
+                  Module 02
+                </div>
+                <CardTitle className="text-lg text-white">Enterprise LLMs &amp; Agents</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground leading-relaxed pt-1">
+                  Production RAG pipelines, private on-premise model serving, and autonomous tool calling.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <ul className="space-y-1.5 text-xs text-muted-foreground font-mono">
+                  <li>• Private Data Boundaries</li>
+                  <li>• Autonomous Tool Calling</li>
+                  <li>• Model Quantization (GGUF)</li>
+                  <li>• Real-Time Alert Synthesis</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/60 hover:bg-card/90 hover:border-accent/50 transition-all duration-300">
+              <CardHeader className="p-6">
+                <div className="text-xs font-mono text-accent font-bold uppercase tracking-wider mb-2">
+                  Module 03
+                </div>
+                <CardTitle className="text-lg text-white">Predictive Maintenance</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground leading-relaxed pt-1">
+                  Time-series anomaly detection on PLC telemetry streams, sensor drift, and degradation models.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <ul className="space-y-1.5 text-xs text-muted-foreground font-mono">
+                  <li>• CAN &amp; Modbus Streaming</li>
+                  <li>• Vibration &amp; Thermal Drift</li>
+                  <li>• Preventative Trigger Logic</li>
+                  <li>• Downtime Prevention ROI</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/60 hover:bg-card/90 hover:border-accent/50 transition-all duration-300">
+              <CardHeader className="p-6">
+                <div className="text-xs font-mono text-accent font-bold uppercase tracking-wider mb-2">
+                  Module 04
+                </div>
+                <CardTitle className="text-lg text-white">AI Governance &amp; Security</CardTitle>
+                <CardDescription className="text-xs text-muted-foreground leading-relaxed pt-1">
+                  Zero-trust telemetry isolation, audit trails, tamper-resistant API gateways, and executive risk control.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <ul className="space-y-1.5 text-xs text-muted-foreground font-mono">
+                  <li>• Zero-Trust Telemetry Logs</li>
+                  <li>• Adversarial Red-Teaming</li>
+                  <li>• Executive AI Strategy</li>
+                  <li>• Regulatory Compliance</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Delivery Options & Booking Callout */}
+          <div className="tech-border rounded-xl p-8 bg-card/80 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2 text-left">
+              <div className="text-xs font-mono uppercase tracking-wider text-accent font-bold">
+                Cohort Packages Available
+              </div>
+              <h3 className="text-2xl font-bold text-white">
+                6-Week Technical Cohorts &amp; 2-Day Executive Strategy Intensives
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                Tailored for engineering teams up to 20 seats. Includes dedicated sandbox environments, code reviews, and enterprise architecture blueprints.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <Link href="/contact">
+                <Button className="font-mono text-xs uppercase tracking-wider gap-2 px-6 py-5 bg-accent text-white font-bold hover:brightness-110 shadow-[0_0_20px_rgba(255,100,255,0.3)]">
+                  Inquire Corporate Cohort <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -283,22 +380,22 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            {/* AI Solutions */}
+            {/* AI Training & Neural Models */}
             <Card className="tech-border bg-card/40 hover:bg-card/70 hover:border-primary/50 transition-all duration-300">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mb-4 text-primary">
                   <Sparkles className="w-6 h-6" />
                 </div>
-                <CardTitle className="text-xl text-white">AI Models &amp; Workflows</CardTitle>
+                <CardTitle className="text-xl text-white">AI Training &amp; Neural Models</CardTitle>
                 <CardDescription className="text-xs text-muted-foreground leading-relaxed">
-                  Intelligent predictive models and automated pipelines that replace repetitive manual tasks.
+                  Intelligent predictive models, fine-tuning, and corporate engineering enablement programs.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-1.5 text-xs text-muted-foreground font-mono">
                   <li>• Predictive Maintenance</li>
                   <li>• Optical Inspection Models</li>
-                  <li>• Automated Lead Routing</li>
+                  <li>• Enterprise Cohorts</li>
                   <li>• Multi-Modal AI Agents</li>
                 </ul>
               </CardContent>
@@ -341,43 +438,74 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      {geoAssets && geoAssets.suggested_faqs && geoAssets.suggested_faqs.length > 0 && (
-        <section className="py-20 px-6 border-t border-border/20">
-          <div className="container mx-auto max-w-4xl space-y-8">
-            <div className="text-center space-y-2">
-              <div className="text-xs font-mono uppercase tracking-wider text-primary">Technical FAQ</div>
-              <h2 className="text-3xl font-bold text-white">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xs font-mono text-muted-foreground">
-                Verified answers regarding 22-Automations engineering and services.
-              </p>
-            </div>
-            <div className="space-y-4">
-              {geoAssets.suggested_faqs.map((faq: { question: string; answer: string }, idx: number) => (
-                <Card key={idx} className="tech-border bg-card/40">
-                  <CardHeader className="p-6">
-                    <CardTitle className="text-lg text-primary">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0 text-sm text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+      <section className="py-20 px-6 border-t border-border/20">
+        <div className="container mx-auto max-w-4xl space-y-8">
+          <div className="text-center space-y-2">
+            <div className="text-xs font-mono uppercase tracking-wider text-primary">Technical FAQ</div>
+            <h2 className="text-3xl font-bold text-white">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs font-mono text-muted-foreground">
+              Verified answers regarding IndusEye RS3 radar specifications and Enterprise AI Training.
+            </p>
           </div>
-        </section>
-      )}
+          <div className="space-y-4">
+            <Card className="tech-border bg-card/40">
+              <CardHeader className="p-6">
+                <CardTitle className="text-lg text-primary">
+                  How does IndusEye RS3 outperform optical photo-eyes in car washes and auto spas?
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0 text-sm text-muted-foreground leading-relaxed">
+                Traditional optical sensors fail when coated with chemical soap froth, high-pressure water mist, or blinded by direct sunlight glare. IndusEye RS3 uses 24 GHz millimeter-wave FMCW radar calibrated at 24.125 GHz, penetrating airborne steam and foam curtains with 100% trigger accuracy.
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/40">
+              <CardHeader className="p-6">
+                <CardTitle className="text-lg text-primary">
+                  What formats and curriculum are available for Enterprise AI Training?
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0 text-sm text-muted-foreground leading-relaxed">
+                We deliver 6-Week Technical Engineering Cohorts (up to 20 seats) with dedicated labs in Edge AI, LLM Agent Architectures, Predictive Maintenance Telemetry, and AI Governance, as well as 2-Day Executive Strategy Intensives for operational leadership.
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/40">
+              <CardHeader className="p-6">
+                <CardTitle className="text-lg text-primary">
+                  How does the 30-day on-site IndusEye RS3 pilot program work?
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0 text-sm text-muted-foreground leading-relaxed">
+                We dispatch pre-calibrated evaluation units with plug-and-play wiring harnesses directly to your facility for live bay testing, backed by direct engineering support from our Greater Toronto Area hardware team.
+              </CardContent>
+            </Card>
+
+            <Card className="tech-border bg-card/40">
+              <CardHeader className="p-6">
+                <CardTitle className="text-lg text-primary">
+                  What is the typical commercial payback period for multi-bay retrofits?
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0 text-sm text-muted-foreground leading-relaxed">
+                Commercial operators typically achieve full return on investment within 60 to 90 days by eliminating false door cycles, preventing vehicle collision damage, and cutting building thermal heating losses during Canadian winter cycles.
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       {/* Final Call to Action */}
       <section className="py-20 px-6">
         <div className="container mx-auto max-w-4xl text-center">
           <Card className="tech-border bg-card/60 glow-effect p-8 sm:p-12 space-y-6">
             <h3 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-              Ready to <span className="text-gradient">Automate</span> What's Next?
+              Ready to <span className="text-gradient">Scale Operations</span> Towards Seven Figures?
             </h3>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              Schedule a technical session with our Ontario engineering team or request an IndusEye RS3 pilot unit for your facility.
+              Schedule an enterprise consultation with our Ontario engineering team or request an IndusEye RS3 pilot unit for your facility.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
               <Link href="/products/sensing-unit">
@@ -395,27 +523,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-border/40 bg-card/40">
-        <div className="container mx-auto max-w-6xl text-center space-y-4">
-          <Link href="/" className="text-2xl font-bold text-gradient inline-block">
-            22-Automations
-          </Link>
-          <p className="text-xs font-mono text-muted-foreground max-w-md mx-auto">
-            Industrial Automation, Embedded Radar Hardware &amp; AI-Powered Operations. Brampton &amp; Greater Toronto Area.
-          </p>
-          <div className="flex justify-center space-x-6 text-xs text-muted-foreground">
-            <a href="#services" className="hover:text-primary transition-colors">Services</a>
-            <Link href="/products" className="hover:text-primary transition-colors">Products</Link>
-            <Link href="/products/sensing-unit" className="hover:text-primary transition-colors">IndusEye RS3</Link>
-            <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-          </div>
-          <div className="text-[11px] font-mono text-muted-foreground/60">
-            Email: <a href="mailto:automations.22@outlook.com" className="text-primary hover:underline">automations.22@outlook.com</a> · Tel: +1 (437) 808-4197
-          </div>
-        </div>
-      </footer>
+      {/* Global Footer */}
+      <Footer />
     </div>
   )
 }
