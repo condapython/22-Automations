@@ -1,8 +1,16 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Radio, ShieldCheck } from 'lucide-react'
+import { Phone, Mail, MapPin, Radio, Cookie } from 'lucide-react'
 
 export default function Footer() {
+  const handleOpenCookieSettings = () => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('open-cookie-settings'))
+    }
+  }
+
   return (
     <footer className="py-16 px-6 border-t border-border/40 bg-card/60 font-sans">
       <div className="container mx-auto max-w-6xl space-y-12">
@@ -103,10 +111,18 @@ export default function Footer() {
           <div>
             © {new Date().getFullYear()} 22-Automations. All rights reserved.
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-6">
             <Link href="/about" className="hover:text-primary transition-colors">Security &amp; Safety</Link>
             <Link href="/products/sensing-unit" className="hover:text-primary transition-colors">Hardware Specs</Link>
             <Link href="/contact" className="hover:text-primary transition-colors">Support</Link>
+            <button
+              type="button"
+              onClick={handleOpenCookieSettings}
+              className="hover:text-primary transition-colors inline-flex items-center gap-1.5 text-primary/90 cursor-pointer"
+            >
+              <Cookie className="w-3.5 h-3.5" />
+              <span>Cookie Settings</span>
+            </button>
           </div>
         </div>
       </div>

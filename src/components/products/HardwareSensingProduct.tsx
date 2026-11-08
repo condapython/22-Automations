@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import { PilotRequestSchema } from '@/lib/validations/contact'
+import { getVisitorSummaryForLead } from '@/lib/cookies/visitor-tracker'
 import {
   Radio,
   Eye,
@@ -170,6 +171,11 @@ export default function HardwareSensingProduct({
     }
 
     const useLabel = getDeploymentLabel(deploymentMode)
+    const visitorSummary = getVisitorSummaryForLead()
+    const visitorBlock = Object.entries(visitorSummary)
+      .map(([k, v]) => `${k.padEnd(24, ' ')}: ${v}`)
+      .join('\n')
+
     const mailtoSubject = encodeURIComponent(`IndusEye RS3 [${formData.requestType}] - ${formData.companyName}`)
     const mailtoBody = encodeURIComponent(
       `IndusEye RS3 Technical Request:\n` +
@@ -182,7 +188,10 @@ export default function HardwareSensingProduct({
       `Phone Number    : ${formData.phone}\n` +
       `Preferred Date  : ${formData.availableDate}\n` +
       `Preferred Time  : ${formData.availableTime}\n` +
-      `Project Details : ${formData.notes}\n`
+      `Project Details : ${formData.notes}\n\n` +
+      `Visitor Cookie & Attribution Telemetry:\n` +
+      `----------------------------------------\n` +
+      `${visitorBlock}\n`
     )
     const mailtoUrl = `mailto:${RECIPIENT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`
 
@@ -199,7 +208,8 @@ export default function HardwareSensingProduct({
       Phone_Number: formData.phone,
       Preferred_Date: formData.availableDate,
       Preferred_Time: formData.availableTime,
-      Notes: formData.notes
+      Notes: formData.notes,
+      ...visitorSummary
     }
 
     try {

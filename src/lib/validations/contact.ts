@@ -101,6 +101,15 @@ export const PilotRequestSchema = z.object({
 export type ContactFormData = z.infer<typeof ContactFormSchema>;
 export type PilotRequestData = z.infer<typeof PilotRequestSchema>;
 
+/**
+ * Strips angle brackets and control characters from untrusted user text
+ */
+export function sanitizeText(input: string): string {
+  return String(input || '')
+    .replace(/[<>]/g, '')
+    .trim();
+}
+
 export function validateContactForm(payload: unknown) {
   const result = ContactFormSchema.safeParse(payload);
   if (result.success) {

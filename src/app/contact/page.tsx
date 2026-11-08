@@ -13,6 +13,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ParticleSystem from '@/components/ParticleSystem'
 import { ContactFormSchema } from '@/lib/validations/contact'
+import { getVisitorSummaryForLead } from '@/lib/cookies/visitor-tracker'
 import { Mail, Phone, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react'
 
 interface FormData {
@@ -116,6 +117,11 @@ export default function Contact() {
     }
 
     const RECIPIENT_EMAIL = 'automations.22@outlook.com'
+    const visitorSummary = getVisitorSummaryForLead()
+    const visitorBlock = Object.entries(visitorSummary)
+      .map(([k, v]) => `${k.padEnd(24, ' ')}: ${v}`)
+      .join('\n')
+
     const mailtoSubject = encodeURIComponent(`Enterprise Inquiry: ${formData.project || 'General'} (${formData.company})`)
     const mailtoBody = encodeURIComponent(
       `Enterprise Contact Inquiry:\n` +
@@ -125,7 +131,10 @@ export default function Contact() {
       `Email       : ${formData.email}\n` +
       `Budget      : ${formData.budget || 'Not specified'}\n` +
       `Project     : ${formData.project || 'Not specified'}\n` +
-      `Message     :\n${formData.message}\n`
+      `Message     :\n${formData.message}\n\n` +
+      `Visitor Cookie & Attribution Telemetry:\n` +
+      `----------------------------------------\n` +
+      `${visitorBlock}\n`
     )
     const mailtoUrl = `mailto:${RECIPIENT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`
 
@@ -138,7 +147,8 @@ export default function Contact() {
       Email: formData.email,
       Budget: formData.budget,
       Project: formData.project,
-      Message: formData.message
+      Message: formData.message,
+      ...visitorSummary
     }
 
     try {

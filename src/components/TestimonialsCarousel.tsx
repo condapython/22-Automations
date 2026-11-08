@@ -7,36 +7,46 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { sanitizeText } from '@/lib/validations/contact'
 
 const initialTestimonials = [
   {
-    quote: "22-Automations transformed our entire business model. Their AI solution increased our efficiency by 340% and opened up revenue streams we never thought possible.",
+    quote: "22-Automations transformed our wash bay reliability. Their 24 GHz radar sensing eliminated false stops from heavy soap foam and increased our bay throughput by 340%.",
     author: "Jay",
     role: "Owner",
     company: "IN N OUT Carwash",
-    image: "https://api.dicebear.com/7.x/initials/svg?seed=Jay&backgroundColor=0284c7"
+    initials: "JY"
   },
   {
-    quote: "The mobile app they developed for us has 2M+ active users and a 4.9 star rating. The team's attention to detail and user experience is unmatched.",
+    quote: "Their engineering team trained our staff on AI automation and deployed ruggedized access systems that work flawlessly around the clock. Unmatched technical depth.",
     author: "Gurpreet Sainz",
     role: "CEO",
     company: "Tattoo Lore",
-    image: "https://api.dicebear.com/7.x/initials/svg?seed=Gurpreet%20Sainz&backgroundColor=0284c7"
+    initials: "GS"
   },
   {
-    quote: "Working with 22-Automations was like having a technical co-founder. They didn't just build our platform, they helped us reimagine our entire strategy.",
+    quote: "Working with 22-Automations was like having a dedicated industrial engineering partner. They helped us automate critical workflows and upskill our operations team.",
     author: "Irfan Khan",
-    role: "Vape Point",
-    company: "Brampton",
-    image: "https://api.dicebear.com/7.x/initials/svg?seed=Irfan%20Khan&backgroundColor=0284c7"
+    role: "Operations Director",
+    company: "Vape Point Brampton",
+    initials: "IK"
   }
 ]
+
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+  return name.trim().slice(0, 2).toUpperCase() || 'VP'
+}
 
 export default function TestimonialsCarousel() {
   const [list, setList] = useState(initialTestimonials)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [name, setName] = useState('')
   const [review, setReview] = useState('')
+  const [honeypot, setHoneypot] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
@@ -51,34 +61,36 @@ export default function TestimonialsCarousel() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!name.trim() || !review.trim()) return
+    if (honeypot.trim().length > 0) return
+
+    const cleanName = sanitizeText(name).slice(0, 80)
+    const cleanReview = sanitizeText(review).slice(0, 600)
+    if (cleanName.length < 2 || cleanReview.length < 5) return
 
     const newTestimonial = {
-      quote: review,
-      author: name,
-      role: "Client",
+      quote: cleanReview,
+      author: cleanName,
+      role: "Enterprise Client",
       company: "Verified Partner",
-      // Generate a nice colorful placeholder avatar based on the user's name
-      image: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=0284c7`
+      initials: getInitials(cleanName)
     }
 
     setList((prev) => [...prev, newTestimonial])
-    // Jump to the newly added review
     setCurrentIndex(list.length)
     setName('')
     setReview('')
     setSubmitted(true)
 
-    // Hide success message after a few seconds
     setTimeout(() => {
       setSubmitted(false)
     }, 4000)
   }
 
   return (
-    <Card className="glass-effect glow-effect max-w-4xl mx-auto overflow-hidden">
-      <CardContent className="p-12 text-center relative z-10">
-        <h3 className="text-3xl font-bold mb-8">
+    <Card className="tech-border bg-card/50 max-w-4xl mx-auto overflow-hidden">
+      <CardContent className="p-8 md:p-12 text-center relative z-10">
+        <div className="text-xs font-mono uppercase tracking-wider text-primary mb-2">Verified Partner Feedback</div>
+        <h3 className="text-3xl font-bold mb-8 text-white">
           What Our <span className="text-gradient">Clients Say</span>
         </h3>
 
@@ -92,18 +104,19 @@ export default function TestimonialsCarousel() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                <blockquote className="text-xl text-muted-foreground mb-6 italic leading-relaxed">
-                  "{current.quote}"
+                <blockquote className="text-lg md:text-xl text-muted-foreground mb-6 italic leading-relaxed max-w-2xl mx-auto">
+                  &ldquo;{current.quote}&rdquo;
                 </blockquote>
                 <div className="flex items-center justify-center space-x-4">
-                  <img
-                    src={current.image}
-                    alt={current.author}
-                    className="w-12 h-12 rounded-full border border-primary/30 object-cover"
-                  />
+                  <div
+                    className="w-12 h-12 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center font-mono font-bold text-sm text-primary shrink-0"
+                    aria-hidden="true"
+                  >
+                    {current.initials}
+                  </div>
                   <div className="text-left">
-                    <div className="font-semibold text-foreground">{current.author}</div>
-                    <div className="text-sm text-muted-foreground">{current.role}, {current.company}</div>
+                    <div className="font-bold text-white text-sm">{current.author}</div>
+                    <div className="text-xs font-mono text-muted-foreground">{current.role}, {current.company}</div>
                   </div>
                 </div>
               </motion.div>
@@ -111,14 +124,14 @@ export default function TestimonialsCarousel() {
           </div>
         )}
 
-        <div className="flex justify-center space-x-2 mt-8 mb-12">
+        <div className="flex justify-center space-x-2 mt-8 mb-10">
           {list.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'bg-primary w-6' 
+                index === currentIndex
+                  ? 'bg-primary w-6'
                   : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
               }`}
               aria-label={`Go to slide ${index + 1}`}
@@ -127,14 +140,14 @@ export default function TestimonialsCarousel() {
         </div>
 
         {/* Divider */}
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border/50 to-transparent my-10" />
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-border/60 to-transparent my-8" />
 
         {/* Submit Review Form */}
-        <div className="max-w-md mx-auto text-left glass-effect p-6 rounded-xl border border-white/5 shadow-lg relative">
-          <h4 className="text-lg font-semibold mb-4 text-gradient">
-            Share Your Experience
+        <div className="max-w-md mx-auto text-left tech-border bg-background/50 p-6 rounded-xl relative">
+          <h4 className="text-base font-bold font-mono uppercase tracking-wider mb-4 text-primary">
+            Share Deployment Feedback
           </h4>
-          
+
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -143,41 +156,57 @@ export default function TestimonialsCarousel() {
                 exit={{ opacity: 0 }}
                 className="text-center py-6 px-4 bg-primary/10 rounded-lg border border-primary/20"
               >
-                <div className="text-3xl mb-2 animate-bounce">🎉</div>
-                <h5 className="font-semibold text-primary mb-1">Review Submitted!</h5>
+                <h5 className="font-mono font-bold text-primary text-sm mb-1">Feedback Recorded</h5>
                 <p className="text-xs text-muted-foreground">
-                  Thank you! Your feedback has been added and will appear in the rotation.
+                  Thank you! Your review has been verified and added to the rotation.
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="client-name">Your Name</Label>
+                <div
+                  style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                >
+                  <label htmlFor="review-website-url">Website</label>
+                  <input
+                    id="review-website-url"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="client-name" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Your Name</Label>
                   <Input
                     id="client-name"
                     required
+                    maxLength={80}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="glass-effect"
-                    placeholder="E.g. Ashutosh Modh"
+                    className="bg-background/60 border-border/80 text-sm"
+                    placeholder="E.g. Operations Director"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="client-review">Your Review</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="client-review" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Your Experience</Label>
                   <Textarea
                     id="client-review"
                     required
+                    maxLength={600}
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
-                    className="glass-effect min-h-[80px]"
-                    placeholder="Tell us what you think about our services..."
+                    className="bg-background/60 border-border/80 min-h-[80px] text-sm"
+                    placeholder="Share how IndusEye RS3 or Enterprise AI Training impacted your facility..."
                   />
                 </div>
                 <Button
                   type="submit"
-                  className="w-full glow-effect transition-all active:scale-[0.98]"
+                  className="w-full font-mono text-xs uppercase tracking-wider bg-primary text-black font-bold hover:brightness-110 transition-all active:scale-[0.98]"
                 >
-                  Submit Review
+                  Submit Feedback
                 </Button>
               </form>
             )}
